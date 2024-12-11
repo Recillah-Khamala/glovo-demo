@@ -15,6 +15,14 @@ Rails.application.routes.draw do
   # Example protected route
   get '/dashboard', to: 'dashboard#index'
 
+  # New routes for user profile management
+  get '/profile', to: 'users#show'
+  patch '/profile', to: 'users#update'
+
+  # New routes for password reset functionality
+  post '/password_reset', to: 'password_resets#create'
+  patch '/password_reset', to: 'password_resets#update'
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
