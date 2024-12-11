@@ -8,6 +8,13 @@ Rails.application.routes.draw do
     resources :transport_orders, only: [:create]
   end
 
+  # New routes for authentication
+  post '/register', to: 'authentication#register'
+  post '/login', to: 'authentication#login'
+
+  # Example protected route
+  get '/dashboard', to: 'dashboard#index'
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
