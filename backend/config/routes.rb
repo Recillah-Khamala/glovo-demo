@@ -5,23 +5,25 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   # get "up" => "rails/health#show", as: :rails_health_check
   namespace :api do
-    resources :transport_orders, only: [:create]
+    namespace :v1 do
+      # Authentication routes
+      post 'auth/login', to: 'authentication#login'
+      post 'auth/register', to: 'authentication#register'
+
+      # User profile routes
+      resource :profile, only: [:show, :update], controller: 'users'
+
+      # Password reset routes
+      resource :password_reset, only: [:create, :update], controller: 'password_resets'
+
+      # Dashboard routes
+      get 'dashboard', to: 'dashboard#index'
+    end
   end
 
   # New routes for authentication
   post '/register', to: 'authentication#register'
   post '/login', to: 'authentication#login'
-
-  # Example protected route
-  get '/dashboard', to: 'dashboard#index'
-
-  # New routes for user profile management
-  get '/profile', to: 'users#show'
-  patch '/profile', to: 'users#update'
-
-  # New routes for password reset functionality
-  post '/password_reset', to: 'password_resets#create'
-  patch '/password_reset', to: 'password_resets#update'
 
   # Defines the root path route ("/")
   # root "posts#index"
