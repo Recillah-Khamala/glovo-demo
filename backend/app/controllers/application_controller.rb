@@ -1,14 +1,12 @@
 # app/controllers/application_controller.rb
 class ApplicationController < ActionController::API
+  attr_reader :current_user
+
   SECRET_KEY = Rails.application.credentials.secret_key_base.to_s
 
   def authenticate_request
-    header = request.headers['Authorization']
-    token = header.split(' ').last if header
-    decoded = decode_token(token)
-    @current_user = User.find(decoded[:user_id]) if decoded
-  rescue
-    render json: { error: 'Unauthorized' }, status: :unauthorized
+    @current_user = AuthorizeApiRequest.call(request.headers)
+    render json: { error: 'Unauthorized' }, status: :unauthorized unless @current_user
   end
 
   private

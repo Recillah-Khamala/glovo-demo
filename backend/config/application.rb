@@ -44,5 +44,6 @@ module Backend
     end
 
     config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths << Rails.root.join('app/services')
   end
 end

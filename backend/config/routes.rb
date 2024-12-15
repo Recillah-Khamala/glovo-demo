@@ -13,6 +13,9 @@ Rails.application.routes.draw do
       # User profile routes
       resource :profile, only: [:show, :update], controller: 'users'
 
+      # User routes
+      resources :users, only: [:index, :show, :update]
+
       # Password reset routes
       resource :password_reset, only: [:create, :update], controller: 'password_resets'
 

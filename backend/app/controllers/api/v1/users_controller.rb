@@ -1,6 +1,12 @@
 # app/controllers/api/v1/users_controller.rb
 class Api::V1::UsersController < ApplicationController
-  before_action :authenticate_request
+  before_action :authenticate_request, except: [:index]  # Skip authentication for index action
+
+  # View all users
+  def index
+    users = User.all
+    render json: { users: users }, status: :ok
+  end
 
   # View Profile
   def show
