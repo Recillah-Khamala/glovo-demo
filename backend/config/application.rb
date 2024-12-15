@@ -6,6 +6,11 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Load .env file in development and test environments
+if Rails.env.development? || Rails.env.test?
+  Dotenv::Rails.load
+end
+
 module Backend
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -37,5 +42,7 @@ module Backend
         resource '*', headers: :any, methods: [:get, :post, :options]
       end
     end
+
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

@@ -1,6 +1,6 @@
 # app/controllers/application_controller.rb
 class ApplicationController < ActionController::API
-  SECRET_KEY = Rails.application.secrets.secret_key_base.to_s
+  SECRET_KEY = Rails.application.credentials.secret_key_base.to_s
 
   def authenticate_request
     header = request.headers['Authorization']
