@@ -21,6 +21,9 @@ Rails.application.routes.draw do
 
       # Dashboard routes
       get 'dashboard', to: 'dashboard#index'
+
+      # Transport companies routes
+      resources :transport_companies, only: [:index]
     end
   end
 

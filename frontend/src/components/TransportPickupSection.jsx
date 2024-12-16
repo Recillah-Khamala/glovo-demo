@@ -77,6 +77,28 @@ export default function TransportPickupSection() {
   });
   const [errors, setErrors] = useState({});
   const [orderCompleted, setOrderCompleted] = useState(false);
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/v1/transport_companies');
+        if (!response.ok) {
+          throw new Error('Failed to fetch companies');
+        }
+        const data = await response.json();
+        setCompanies(data.companies);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
 
   const validateStep = () => {
     const newErrors = {};
@@ -151,33 +173,6 @@ export default function TransportPickupSection() {
     }
   };
 
-  const companies = [
-    {
-      name: "Express Transport Co.",
-      location: "Downtown Financial District",
-      hours: "8:00 AM - 8:00 PM",
-      goods: ["Documents", "Parcels", "Electronics"],
-      imageUrl:
-        "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "City Logistics",
-      location: "Central Business Hub",
-      hours: "24/7 Service",
-      goods: ["Heavy Packages", "Furniture", "Commercial Goods"],
-      imageUrl:
-        "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "Swift Delivery",
-      location: "Shopping District",
-      hours: "9:00 AM - 10:00 PM",
-      goods: ["Retail Items", "Food", "Documents"],
-      imageUrl:
-        "https://images.unsplash.com/photo-1615460549969-36fa19521a4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-  ];
-
   return (
     <main className="w-full bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -215,72 +210,78 @@ export default function TransportPickupSection() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {companies.map((company, index) => (
-                    <div
-                      key={index}
-                      className={`bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border ${
-                        selectedCompany === company
-                          ? "border-[#FFC244]"
-                          : "border-gray-100"
-                      }`}
-                      onClick={() => setSelectedCompany(company)}
-                    >
-                      <div className="mb-6">
-                        <img
-                          src={company.imageUrl}
-                          alt={`${company.name} facility`}
-                          className="w-full h-48 object-cover rounded-lg"
-                        />
-                      </div>
-
-                      <div className="flex justify-between items-start mb-4">
-                        <h3 className="text-xl font-semibold">
-                          {company.name}
-                        </h3>
-                        <Truck className="text-[#00A082]" size={24} />
-                      </div>
-
-                      <div className="space-y-3 mb-6">
-                        <div className="flex items-center gap-2">
-                          <MapPin className="text-gray-400" size={18} />
-                          <span className="text-gray-600">
-                            {company.location}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <Clock className="text-gray-400" size={18} />
-                          <span className="text-gray-600">{company.hours}</span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <Package className="text-gray-400" size={18} />
-                          <span className="text-gray-600">
-                            {company.goods.join(", ")}
-                          </span>
-                        </div>
-                      </div>
-
-                      <button
-                        className={`w-full ${
+                {loading ? (
+                  <div className="text-center">Loading companies...</div>
+                ) : error ? (
+                  <div className="text-center text-red-500">Error: {error}</div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {companies.map((company, index) => (
+                      <div
+                        key={index}
+                        className={`bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border ${
                           selectedCompany === company
-                            ? "bg-[#FFC244] hover:bg-[#ffb820]"
-                            : "bg-gray-100 hover:bg-gray-200"
-                        } text-black font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2`}
-                        onClick={() => {
-                          setSelectedCompany(company);
-                          handleNext();
-                        }}
+                            ? "border-[#FFC244]"
+                            : "border-gray-100"
+                        }`}
+                        onClick={() => setSelectedCompany(company)}
                       >
-                        {selectedCompany === company
-                          ? "Selected"
-                          : "Select & Continue"}
-                        <ChevronRight size={20} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
+                        <div className="mb-6">
+                          <img
+                            src={company.imageUrl}
+                            alt={`${company.name} facility`}
+                            className="w-full h-48 object-cover rounded-lg"
+                          />
+                        </div>
+
+                        <div className="flex justify-between items-start mb-4">
+                          <h3 className="text-xl font-semibold">
+                            {company.name}
+                          </h3>
+                          <Truck className="text-[#00A082]" size={24} />
+                        </div>
+
+                        <div className="space-y-3 mb-6">
+                          <div className="flex items-center gap-2">
+                            <MapPin className="text-gray-400" size={18} />
+                            <span className="text-gray-600">
+                              {company.location}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <Clock className="text-gray-400" size={18} />
+                            <span className="text-gray-600">{company.hours}</span>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <Package className="text-gray-400" size={18} />
+                            <span className="text-gray-600">
+                              {company.goods.join(", ")}
+                            </span>
+                          </div>
+                        </div>
+
+                        <button
+                          className={`w-full ${
+                            selectedCompany === company
+                              ? "bg-[#FFC244] hover:bg-[#ffb820]"
+                              : "bg-gray-100 hover:bg-gray-200"
+                          } text-black font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2`}
+                          onClick={() => {
+                            setSelectedCompany(company);
+                            handleNext();
+                          }}
+                        >
+                          {selectedCompany === company
+                            ? "Selected"
+                            : "Select & Continue"}
+                          <ChevronRight size={20} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </>
             )}
 
