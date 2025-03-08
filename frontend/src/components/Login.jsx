@@ -148,14 +148,14 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Header with Logo */}
-      <div className="border-b">
+      <div className="fixed top-0 left-0 w-full bg-white border-b shadow-sm z-50">
         <div className="max-w-[calc(1124px+15%)] mx-auto px-2 md:px-[6.5%] py-5">
           <PintxoLogo />
         </div>
       </div>
 
       {/* Login Content */}
-      <div className="max-w-md mx-auto px-4 py-2">
+      <div className="max-w-md mx-auto px-4 py-2" style={{ marginTop: "84px" }}>
         <div className="flex flex-col items-center">
           <div className="w-full mb-8 flex justify-end">
             <button
@@ -295,7 +295,7 @@ const Login = () => {
             </button>
           </div>
 
-          <div className="mt-6 text-gray-500">or with</div>
+          <div className="mt-6 text-gray-500 text-xl">or with</div>
 
           <div className="mt-6 grid grid-cols-3 gap-4 w-full">
             <button
