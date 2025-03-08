@@ -271,22 +271,27 @@ const Login = () => {
             apply.
           </p>
 
-          <div className="mt-8 w-full space-y-4">
+          {/* Verification Methods */}
+          <div className="w-full mt-8 flex gap-3">
             <button
-              className="w-full bg-[#25D366] text-white px-4 py-3 rounded hover:bg-[#128C7E] transition-colors"
-              type="button"
-              aria-label="Login with WhatsApp"
+              className="flex-1 px-4 py-2 border-2 border-[#017963] text-[#017963] bg-[#e0f0ed] font-bold rounded-[50px] hover:bg-[#c6ebe4] transition-colors"
+              type="submit"
+              name="WhatsApp"
               onClick={handleWhatsAppLogin}
             >
-              WhatsApp
+              <span className="flex items-center justify-center">
+                <span>WhatsApp</span>
+              </span>
             </button>
             <button
-              className="w-full bg-green-500 text-white px-4 py-3 rounded hover:bg-green-600 transition-colors"
-              type="button"
-              aria-label="Login with SMS"
+              className="flex-1 px-4 py-2 bg-[#017963] text-white font-bold rounded-[50px] hover:bg-[#00664E] transition-colors"
+              type="submit"
+              name="SMS"
               onClick={handleSMSLogin}
             >
-              SMS
+              <span className="flex items-center justify-center">
+                <span>SMS</span>
+              </span>
             </button>
           </div>
 
