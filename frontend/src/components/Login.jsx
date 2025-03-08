@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import LoginHeader from "./LoginHeader";
 import googleIcon from "../assets/google.svg";
 import facebookIcon from "../assets/facebook.svg";
+import EmailLoginForm from "./EmailLoginForm";
 // ... existing code ...
 
 // Replace the email icon import with the URL
@@ -71,6 +72,7 @@ const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -97,9 +99,17 @@ const Login = () => {
   };
 
   const handleSocialLogin = (provider) => {
-    // TODO: Implement social login logic
-    console.log(`${provider} login clicked`);
+    if (provider === "Email") {
+      setShowEmailForm(true);
+    } else {
+      // TODO: Implement social login logic
+      console.log(`${provider} login clicked`);
+    }
   };
+
+  if (showEmailForm) {
+    return <EmailLoginForm onBack={() => setShowEmailForm(false)} />;
+  }
 
   return (
     <div className="min-h-screen bg-white">
