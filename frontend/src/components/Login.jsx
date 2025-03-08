@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import googleIcon from "../assets/google.svg";
+import facebookIcon from "../assets/facebook.svg";
+// ... existing code ...
+
+// Replace the email icon import with the URL
+const emailIcon = "https://glovoapp.com/_next/static/media/email.caf0e00b.svg";
 
 // TODO: This should be fetched from the backend API
 // Example API endpoint: /api/countries
@@ -297,33 +303,97 @@ const Login = () => {
 
           <div className="mt-6 text-gray-500 text-xl">or with</div>
 
-          <div className="mt-6 grid grid-cols-3 gap-4 w-full">
+          {/* Social Login */}
+          <section className="mt-6 grid grid-row-3 gap-4 w-full">
+            <div id="google-button-prompt-target"></div>
             <button
-              className="flex items-center justify-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition-colors"
+              className="BaseButton_pintxo-button__OUsk3 LoginButton_socialButton__XqOuf pintxo-typography-callout1 w-full border border-zinc-300 rounded-[50px] py-3 flex justify-center hover:bg-[#e6e5f6]"
+              data-size="m"
+              data-variant="floating"
+              data-disabled="false"
+              data-loading="false"
+              data-block="true"
+              data-rtl="false"
+              type="submit"
               onClick={() => handleSocialLogin("Google")}
-              aria-label="Login with Google"
             >
-              <img src="/assets/google.svg" alt="Google" className="w-6 h-6" />
+              <span className="BaseButton_pintxo-button__content__LsfEa">
+                <span className="BaseButton_pintxo-button__content__label__JfXya">
+                  <span className="LoginButton_socialButtonImage__9U5ye flex items-center gap-0">
+                    <img
+                      alt="google"
+                      loading="lazy"
+                      width="34"
+                      height="34"
+                      decoding="async"
+                      src={googleIcon}
+                    />
+                    <span className="text-zinc-950 text-base font-extrabold">
+                      Google
+                    </span>
+                  </span>
+                </span>
+              </span>
             </button>
             <button
-              className="flex items-center justify-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition-colors"
+              className="BaseButton_pintxo-button__OUsk3 LoginButton_socialButton__XqOuf pintxo-typography-callout1 w-full border border-zinc-300 rounded-[50px] py-3 flex justify-center hover:bg-[#e6e5f6]"
+              data-size="m"
+              data-variant="floating"
+              data-disabled="false"
+              data-loading="false"
+              data-block="true"
+              data-rtl="false"
+              type="submit"
               onClick={() => handleSocialLogin("Facebook")}
-              aria-label="Login with Facebook"
             >
-              <img
-                src="/assets/facebook.svg"
-                alt="Facebook"
-                className="w-6 h-6"
-              />
+              <span className="BaseButton_pintxo-button__content__LsfEa">
+                <span className="BaseButton_pintxo-button__content__label__JfXya">
+                  <span className="LoginButton_socialButtonImage__9U5ye flex items-center gap-1">
+                    <img
+                      alt="facebook"
+                      loading="lazy"
+                      width="30"
+                      height="30"
+                      decoding="async"
+                      src={facebookIcon}
+                    />
+                    <span className="text-zinc-950 text-base font-extrabold">
+                      Facebook
+                    </span>
+                  </span>
+                </span>
+              </span>
             </button>
             <button
-              className="flex items-center justify-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition-colors"
+              className="BaseButton_pintxo-button__OUsk3 LoginButton_socialButton__XqOuf pintxo-typography-callout1 w-full border border-zinc-300 rounded-[50px] py-3 flex justify-center hover:bg-[#e6e5f6]"
+              data-size="m"
+              data-variant="floating"
+              data-disabled="false"
+              data-loading="false"
+              data-block="true"
+              data-rtl="false"
+              type="submit"
               onClick={() => handleSocialLogin("Email")}
-              aria-label="Login with Email"
             >
-              <img src="/assets/email.svg" alt="Email" className="w-6 h-6" />
+              <span className="BaseButton_pintxo-button__content__LsfEa">
+                <span className="BaseButton_pintxo-button__content__label__JfXya">
+                  <span className="LoginButton_socialButtonImage__9U5ye flex items-center gap-2">
+                    <img
+                      alt="Email"
+                      loading="lazy"
+                      width="30"
+                      height="30"
+                      decoding="async"
+                      src={emailIcon}
+                    />
+                    <span className="text-zinc-950 text-base font-extrabold">
+                      Email
+                    </span>
+                  </span>
+                </span>
+              </span>
             </button>
-          </div>
+          </section>
 
           <div className="mt-8 text-gray-500 text-sm text-center">
             By creating an account, you automatically accept our{" "}
