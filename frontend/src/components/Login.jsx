@@ -395,11 +395,12 @@ const Login = () => {
             </button>
           </section>
 
-          <div className="mt-8 text-gray-500 text-sm text-center">
+          {/* Terms and Services */}
+          <div className="mt-8 text-gray-500 text-lg text-center">
             By creating an account, you automatically accept our{" "}
             <a
               href="https://glovoapp.com/docs/en/legal/terms/"
-              className="underline hover:text-gray-700 transition-colors"
+              className="hover:underline text-[#017963] transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -408,7 +409,7 @@ const Login = () => {
             ,{" "}
             <a
               href="https://glovoapp.com/docs/en/legal/privacy/"
-              className="underline hover:text-gray-700 transition-colors"
+              className="hover:underline text-[#017963] transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -417,7 +418,7 @@ const Login = () => {
             , and{" "}
             <a
               href="https://glovoapp.com/en/legal/cookies/"
-              className="underline hover:text-gray-700 transition-colors"
+              className="hover:underline text-[#017963] transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
