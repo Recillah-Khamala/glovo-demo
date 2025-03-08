@@ -248,6 +248,29 @@ const Login = () => {
             </div>
           </div>
 
+          {/* reCAPTCHA Terms */}
+          <p className="w-full text-base text-neutral-950 mt-6">
+            This site is protected by reCAPTCHA and the Google{" "}
+            <a
+              href="https://policies.google.com/privacy"
+              className="text-[#017963] font-bold hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Privacy Policy
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://policies.google.com/terms"
+              className="text-[#017963] font-bold hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Terms of Service
+            </a>{" "}
+            apply.
+          </p>
+
           <div className="mt-8 w-full space-y-4">
             <button
               className="w-full bg-[#25D366] text-white px-4 py-3 rounded hover:bg-[#128C7E] transition-colors"
