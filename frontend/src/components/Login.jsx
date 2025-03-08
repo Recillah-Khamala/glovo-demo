@@ -1,5 +1,31 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+
+// TODO: This should be fetched from the backend API
+// Example API endpoint: /api/countries
+// Should return an array of countries with:
+// - code: Country code (e.g., "ES")
+// - name: Country name (e.g., "Spain")
+// - prefix: Phone prefix (e.g., "+34")
+// - flag: Country flag emoji (e.g., "🇪🇸")
+// Consider implementing:
+// 1. API endpoint for countries list
+// 2. Loading state while fetching
+// 3. Error handling if fetch fails
+// 4. Caching mechanism to avoid frequent requests
+const COUNTRIES = [
+  { code: "ES", name: "Spain", prefix: "+34", flag: "🇪🇸" },
+  { code: "GB", name: "United Kingdom", prefix: "+44", flag: "🇬🇧" },
+  { code: "FR", name: "France", prefix: "+33", flag: "🇫🇷" },
+  { code: "DE", name: "Germany", prefix: "+49", flag: "🇩🇪" },
+  { code: "IT", name: "Italy", prefix: "+39", flag: "🇮🇹" },
+  { code: "PT", name: "Portugal", prefix: "+351", flag: "🇵🇹" },
+  { code: "NL", name: "Netherlands", prefix: "+31", flag: "🇳🇱" },
+  { code: "BE", name: "Belgium", prefix: "+32", flag: "🇧🇪" },
+  { code: "US", name: "United States", prefix: "+1", flag: "🇺🇸" },
+  { code: "CA", name: "Canada", prefix: "+1", flag: "🇨🇦" },
+  { code: "KE", name: "Kenya", prefix: "+254", flag: "KE" },
+];
 
 const CloseIcon = () => (
   <svg
@@ -12,6 +38,22 @@ const CloseIcon = () => (
       fillRule="evenodd"
       clipRule="evenodd"
       d="M21.0251 21.0251C22.392 19.6583 24.608 19.6583 25.9749 21.0251L48 43.0503L70.0251 21.0251C71.392 19.6583 73.608 19.6583 74.9749 21.0251C76.3417 22.392 76.3417 24.608 74.9749 25.9749L52.9497 48L74.9749 70.0251C76.3417 71.392 76.3417 73.608 74.9749 74.9749C73.608 76.3417 71.392 76.3417 70.0251 74.9749L48 52.9497L25.9749 74.9749C24.608 76.3417 22.392 76.3417 21.0251 74.9749C19.6583 73.608 19.6583 71.392 21.0251 70.0251L43.0503 48L21.0251 25.9749C19.6583 24.608 19.6583 22.392 21.0251 21.0251Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+const ChevronDownIcon = () => (
+  <svg
+    className="w-6 h-6"
+    viewBox="0 0 96 96"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M74.9517 37.0003C76.3323 38.3532 76.3547 40.5692 75.0017 41.9498L50.5017 66.9498C49.8434 67.6215 48.9425 68 48.002 68C47.0614 68 46.1605 67.6215 45.5022 66.9498L21.0022 41.9498C19.6492 40.5692 19.6716 38.3532 21.0522 37.0003C22.4328 35.6473 24.6487 35.6697 26.0017 37.0503L48.002 59.4995L70.0022 37.0503C71.3552 35.6697 73.5711 35.6473 74.9517 37.0003Z"
       fill="currentColor"
     />
   </svg>
@@ -70,6 +112,21 @@ const PintxoLogo = () => (
 
 const Login = () => {
   const { isLoginModalOpen, toggleLoginModal } = useAuth();
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   if (!isLoginModalOpen) return null;
 
@@ -98,7 +155,7 @@ const Login = () => {
       </div>
 
       {/* Login Content */}
-      <div className="max-w-md mx-auto px-4 py-12">
+      <div className="max-w-md mx-auto px-4 py-2">
         <div className="flex flex-col items-center">
           <div className="w-full mb-8 flex justify-end">
             <button
@@ -111,10 +168,85 @@ const Login = () => {
             </button>
           </div>
 
-          <p className="text-2xl font-bold">Welcome</p>
-          <p className="text-gray-600">
-            Continue with one of the following options
-          </p>
+          <p className="text-4xl font-bold pb-3">Welcome</p>
+          <p className="text-lg">Continue with one of the following options</p>
+
+          {/* Phone Number Input Section */}
+          <div className="w-full mt-6 flex gap-3">
+            {/* Prefix Dropdown */}
+            <div className="w-32" ref={dropdownRef}>
+              <div className="Field_pintxo-field-container__oICbz">
+                <div className="FieldHeader_pintxo-field-header__H1Uqt">
+                  <span className="text-gray-600 font-bold">Prefix</span>
+                </div>
+                <div className="relative">
+                  <button
+                    className="w-full flex items-center gap-2 px-3 py-4 border rounded-lg border-gray-400 focus:ring-1 focus:ring-[#017963] bg-white hover:bg-gray-50 transition-colors"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    type="button"
+                  >
+                    <span>{selectedCountry.flag}</span>
+                    <span className="flex-1 text-left">
+                      {selectedCountry.prefix}
+                    </span>
+                    <ChevronDownIcon />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {isDropdownOpen && (
+                    <div className="absolute z-50 w-64 mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                      {COUNTRIES.map((country) => (
+                        <button
+                          key={country.code}
+                          className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 transition-colors"
+                          onClick={() => {
+                            setSelectedCountry(country);
+                            setIsDropdownOpen(false);
+                          }}
+                        >
+                          <span>{country.flag}</span>
+                          <span className="flex-1 text-left">
+                            {country.name}
+                          </span>
+                          <span className="text-gray-500">
+                            {country.prefix}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Phone Number Input */}
+            <div className="flex-1">
+              <div className="Field_pintxo-field-container__oICbz">
+                <div className="FieldHeader_pintxo-field-header__H1Uqt">
+                  <span className="text-gray-600 font-bold">Phone number</span>
+                </div>
+                <div className="relative">
+                  <input
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="w-full px-3 py-4 border rounded-lg border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#017963] focus:border-transparent "
+                    placeholder="Phone number"
+                    aria-label="Phone number"
+                  />
+                  {phoneNumber && (
+                    <button
+                      onClick={() => setPhoneNumber("")}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 p-1 border rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600"
+                      aria-label="Clear phone number"
+                    >
+                      <CloseIcon />
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className="mt-8 w-full space-y-4">
             <button
