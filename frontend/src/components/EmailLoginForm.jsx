@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import LoginHeader from "./LoginHeader";
+import emailEnvelope from "../assets/email-envelope.svg";
 
 const BackIcon = () => (
   <svg
     className="NamedIcon_pintxo-icon__foreground__RbIjm"
-    width="96"
-    height="96"
+    width="24"
+    height="24"
     viewBox="0 0 96 96"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -23,8 +24,8 @@ const BackIcon = () => (
 const CloseIcon = () => (
   <svg
     className="NamedIcon_pintxo-icon__foreground__RbIjm"
-    width="96"
-    height="96"
+    width="24"
+    height="24"
     viewBox="0 0 96 96"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +83,7 @@ const EmailLoginForm = () => {
             <div>
               <div className="flex justify-between mb-8">
                 <button
-                  className="BaseButton_pintxo-button__OUsk3 IconButton_pintxo-icon-button__XwNcu pintxo-typography-callout2"
+                  className="BaseButton_pintxo-button__OUsk3 IconButton_pintxo-icon-button__XwNcu pintxo-typography-callout2 p-2 hover:bg-gray-100 rounded-lg"
                   data-size="s"
                   data-variant="neutral"
                   data-disabled="false"
@@ -108,7 +109,7 @@ const EmailLoginForm = () => {
                   </span>
                 </button>
                 <button
-                  className="BaseButton_pintxo-button__OUsk3 IconButton_pintxo-icon-button__XwNcu pintxo-typography-callout2"
+                  className="BaseButton_pintxo-button__OUsk3 IconButton_pintxo-icon-button__XwNcu pintxo-typography-callout2 p-2 hover:bg-gray-100 rounded-lg"
                   data-size="s"
                   data-variant="neutral"
                   data-disabled="false"
@@ -135,69 +136,78 @@ const EmailLoginForm = () => {
                 </button>
               </div>
             </div>
-            <div className="flex flex-col items-center">
-              <img
-                alt="email-envelope"
-                loading="lazy"
-                width="96"
-                height="96"
-                src="/_next/static/media/email-envelope.65b98a02.svg"
-                className="mb-6"
-              />
-              <p className="pintxo-typography-title2 EmailForm_title__FTOE_ text-2xl font-bold mb-2">
-                Let's start with your email
-              </p>
-              <p className="pintxo-typography-body1 EmailForm_text__wspKT text-gray-600 mb-6">
-                We'll check if you already have an account. If not, we'll create
-                a new one.
-              </p>
-              <div className="Field_pintxo-field-container__oICbz w-full">
-                <div className="FieldHeader_pintxo-field-header__H1Uqt mb-2">
-                  <div>
-                    <span
-                      id=":r9:-header"
-                      className="FieldHeader_pintxo-field-header__label__UzrUo font-semibold"
-                    >
-                      Email
+            <div className="grid grid-cols-[auto,1fr] gap-8 items-start">
+              <div className="flex flex-col items-start w-full">
+                <div className="w-full mb-1">
+                  <img
+                    alt="email-envelope"
+                    src={emailEnvelope}
+                    width="96"
+                    height="96"
+                    loading="lazy"
+                    decoding="async"
+                    data-nimg="1"
+                    style={{ color: "transparent" }}
+                  />
+                </div>
+                <div className="w-full">
+                  <p className="pintxo-typography-title2 EmailForm_title__FTOE_ text-3xl font-bold mb-4">
+                    Let's start with your email
+                  </p>
+                </div>
+
+                <p className="pintxo-typography-body1 EmailForm_text__wspKT text-zinc-950 text-lg mb-2">
+                  We'll check if you already have an account. If not, we'll
+                  create a new one.
+                </p>
+                <div className="Field_pintxo-field-container__oICbz w-full">
+                  <div className="FieldHeader_pintxo-field-header__H1Uqt mb-2">
+                    <div>
+                      <span
+                        id=":r9:-header"
+                        className="FieldHeader_pintxo-field-header__label__UzrUo font-semibold"
+                      >
+                        Email
+                      </span>
+                    </div>
+                  </div>
+                  <div className="BaseInput_pintxo-base-input__99D1j text-input relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                      <EmailIcon />
                     </span>
+                    <input
+                      className="BaseInput_pintxo-base-input__input__N7OGR pintxo-typography-body1 w-full px-12 py-4 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent"
+                      aria-label="Email"
+                      placeholder="Email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    {email && (
+                      <button
+                        onClick={() => setEmail("")}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100"
+                        aria-label="Clear email"
+                      >
+                        <CloseIcon />
+                      </button>
+                    )}
                   </div>
                 </div>
-                <div className="BaseInput_pintxo-base-input__99D1j text-input relative">
-                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                    <EmailIcon />
-                  </span>
-                  <input
-                    className="BaseInput_pintxo-base-input__input__N7OGR pintxo-typography-body1 w-full px-12 py-4 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent"
-                    aria-label="Email"
-                    placeholder="Email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  {email && (
-                    <button
-                      onClick={() => setEmail("")}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100"
-                      aria-label="Clear email"
-                    >
-                      <CloseIcon />
-                    </button>
-                  )}
-                </div>
-              </div>
-              <div className="EmailForm_submit__gCVss w-full mt-6">
-                <button
-                  className="BaseButton_pintxo-button__OUsk3 pintxo-typography-callout1 w-full bg-[#017963] text-white font-bold py-3 rounded-[50px] hover:bg-[#00664E] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-                  disabled={!email}
-                  onClick={handleSubmit}
-                  type="submit"
-                >
-                  <span className="BaseButton_pintxo-button__content__LsfEa">
-                    <span className="BaseButton_pintxo-button__content__label__JfXya">
-                      Continue
+                <div className="EmailForm_submit__gCVss w-full mt-6">
+                  <button
+                    className="BaseButton_pintxo-button__OUsk3 pintxo-typography-callout1 w-full bg-[#017963] text-white font-bold py-3 rounded-[50px] hover:bg-[#00664E] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    disabled={!email}
+                    onClick={handleSubmit}
+                    type="submit"
+                  >
+                    <span className="BaseButton_pintxo-button__content__LsfEa">
+                      <span className="BaseButton_pintxo-button__content__label__JfXya">
+                        Continue
+                      </span>
                     </span>
-                  </span>
-                </button>
+                  </button>
+                </div>
               </div>
             </div>
           </section>
