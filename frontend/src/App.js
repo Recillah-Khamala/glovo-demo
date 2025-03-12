@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Address from "./components/Address";
 import Footer from "./components/Footer";
@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 
 const AppContent = () => {
   const { isLoginModalOpen } = useAuth();
-  const location = useLocation();
   const currentLoginView = useSelector((state) => state.login.currentView);
   console.log("Current login view:", currentLoginView);
 
@@ -37,7 +36,11 @@ const AppContent = () => {
         <div className="fixed inset-0 overflow-hidden">
           <MainLayout />
         </div>
-        <div className="fixed inset-0 z-50 bg-white">
+        <div
+          className={`fixed inset-0 z-50 bg-white ${
+            currentLoginView === "login" ? "overflow-y-auto" : ""
+          }`}
+        >
           <div className="min-h-screen">
             {currentLoginView === "email" ? <EmailLoginForm /> : <Login />}
           </div>

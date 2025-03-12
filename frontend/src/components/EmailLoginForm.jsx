@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import LoginHeader from "./LoginHeader";
 import emailEnvelope from "../assets/email-envelope.svg";
 import emailIcon from "../assets/email-icon.svg";
@@ -61,7 +60,7 @@ const EmailLoginForm = () => {
   };
 
   return (
-    <div className="h-screen bg-white">
+    <div className="bg-white">
       <LoginHeader />
 
       {/* Main Content - Add margin-top to account for fixed header */}
@@ -78,7 +77,6 @@ const EmailLoginForm = () => {
                   data-loading="false"
                   data-block="false"
                   data-rtl="false"
-                  role="button"
                   type="button"
                   aria-label="Back"
                   onClick={handleBack}
@@ -104,7 +102,6 @@ const EmailLoginForm = () => {
                   data-loading="false"
                   data-block="false"
                   data-rtl="false"
-                  role="button"
                   type="button"
                   aria-label="Close"
                   onClick={toggleLoginModal}
