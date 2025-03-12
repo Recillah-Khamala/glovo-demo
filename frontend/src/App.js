@@ -5,6 +5,7 @@ import Address from "./components/Address";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
 import EmailLoginForm from "./components/EmailLoginForm";
+import CreatePassword from "./components/CreatePassword";
 import { useAuth } from "./context/AuthContext";
 import { useSelector } from "react-redux";
 
@@ -42,7 +43,13 @@ const AppContent = () => {
           }`}
         >
           <div className="min-h-screen">
-            {currentLoginView === "email" ? <EmailLoginForm /> : <Login />}
+            {currentLoginView === "email" ? (
+              <EmailLoginForm />
+            ) : currentLoginView === "create-password" ? (
+              <CreatePassword />
+            ) : (
+              <Login />
+            )}
           </div>
         </div>
       </>

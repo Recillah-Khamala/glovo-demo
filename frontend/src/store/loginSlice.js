@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentView: "login", // can be 'login' or 'email'
+  currentView: "login", // can be 'login', 'email', or 'create-password'
+  email: "", // store email for registration flow
 };
 
 export const loginSlice = createSlice({
@@ -19,8 +20,11 @@ export const loginSlice = createSlice({
         state.currentView = action.payload;
       }
     },
+    setEmail: (state, action) => {
+      state.email = action.payload;
+    },
   },
 });
 
-export const { setLoginView } = loginSlice.actions;
+export const { setLoginView, setEmail } = loginSlice.actions;
 export default loginSlice.reducer;
