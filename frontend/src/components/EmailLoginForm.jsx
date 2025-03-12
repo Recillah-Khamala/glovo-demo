@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import LoginHeader from "./LoginHeader";
 
 const BackIcon = () => (
   <svg
@@ -71,108 +72,137 @@ const EmailLoginForm = () => {
   };
 
   return (
-    <div className="cw-layout-centered">
-      <section className="Login_container__Bh12h">
-        <section>
-          <div>
-            <div className="Navigation_icons__0veFt flex justify-between w-full mb-8">
-              <button
-                className="BaseButton_pintxo-button__OUsk3 IconButton_pintxo-icon-button__XwNcu pintxo-typography-callout2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                onClick={handleBack}
-                type="button"
-                aria-label="Back"
-              >
-                <span className="BaseButton_pintxo-button__content__LsfEa">
-                  <span className="BaseButton_pintxo-button__content__label__JfXya">
-                    <span className="NamedIcon_pintxo-icon__wBfWN">
-                      <BackIcon />
+    <div className="min-h-screen bg-white">
+      <LoginHeader />
+
+      {/* Main Content - Add margin-top to account for fixed header */}
+      <div className="max-w-md mx-auto px-4 py-2" style={{ marginTop: "84px" }}>
+        <section className="Login_container__Bh12h">
+          <section>
+            <div>
+              <div className="flex justify-between mb-8">
+                <button
+                  className="BaseButton_pintxo-button__OUsk3 IconButton_pintxo-icon-button__XwNcu pintxo-typography-callout2"
+                  data-size="s"
+                  data-variant="neutral"
+                  data-disabled="false"
+                  data-loading="false"
+                  data-block="false"
+                  data-rtl="false"
+                  role="button"
+                  type="button"
+                  aria-label="Back"
+                  onClick={handleBack}
+                >
+                  <span className="BaseButton_pintxo-button__content__LsfEa">
+                    <span className="BaseButton_pintxo-button__content__label__JfXya">
+                      <span
+                        className="NamedIcon_pintxo-icon__wBfWN"
+                        data-size="m"
+                        data-rtl="false"
+                        data-outline="true"
+                      >
+                        <BackIcon />
+                      </span>
                     </span>
                   </span>
-                </span>
-              </button>
-              <button
-                className="BaseButton_pintxo-button__OUsk3 IconButton_pintxo-icon-button__XwNcu pintxo-typography-callout2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                onClick={toggleLoginModal}
-                type="button"
-                aria-label="Close"
-              >
-                <span className="BaseButton_pintxo-button__content__LsfEa">
-                  <span className="BaseButton_pintxo-button__content__label__JfXya">
-                    <span className="NamedIcon_pintxo-icon__wBfWN">
-                      <CloseIcon />
+                </button>
+                <button
+                  className="BaseButton_pintxo-button__OUsk3 IconButton_pintxo-icon-button__XwNcu pintxo-typography-callout2"
+                  data-size="s"
+                  data-variant="neutral"
+                  data-disabled="false"
+                  data-loading="false"
+                  data-block="false"
+                  data-rtl="false"
+                  role="button"
+                  type="button"
+                  aria-label="Close"
+                  onClick={toggleLoginModal}
+                >
+                  <span className="BaseButton_pintxo-button__content__LsfEa">
+                    <span className="BaseButton_pintxo-button__content__label__JfXya">
+                      <span
+                        className="NamedIcon_pintxo-icon__wBfWN"
+                        data-size="m"
+                        data-rtl="false"
+                        data-outline="true"
+                      >
+                        <CloseIcon />
+                      </span>
                     </span>
                   </span>
-                </span>
-              </button>
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col items-center">
-            <img
-              alt="email-envelope"
-              loading="lazy"
-              width="96"
-              height="96"
-              src="/_next/static/media/email-envelope.65b98a02.svg"
-              className="mb-6"
-            />
-            <p className="pintxo-typography-title2 EmailForm_title__FTOE_ text-2xl font-bold mb-2">
-              Let's start with your email
-            </p>
-            <p className="pintxo-typography-body1 EmailForm_text__wspKT text-gray-600 mb-6">
-              We'll check if you already have an account. If not, we'll create a
-              new one.
-            </p>
-            <div className="Field_pintxo-field-container__oICbz w-full">
-              <div className="FieldHeader_pintxo-field-header__H1Uqt mb-2">
-                <div>
-                  <span
-                    id=":r9:-header"
-                    className="FieldHeader_pintxo-field-header__label__UzrUo font-semibold"
-                  >
-                    Email
+            <div className="flex flex-col items-center">
+              <img
+                alt="email-envelope"
+                loading="lazy"
+                width="96"
+                height="96"
+                src="/_next/static/media/email-envelope.65b98a02.svg"
+                className="mb-6"
+              />
+              <p className="pintxo-typography-title2 EmailForm_title__FTOE_ text-2xl font-bold mb-2">
+                Let's start with your email
+              </p>
+              <p className="pintxo-typography-body1 EmailForm_text__wspKT text-gray-600 mb-6">
+                We'll check if you already have an account. If not, we'll create
+                a new one.
+              </p>
+              <div className="Field_pintxo-field-container__oICbz w-full">
+                <div className="FieldHeader_pintxo-field-header__H1Uqt mb-2">
+                  <div>
+                    <span
+                      id=":r9:-header"
+                      className="FieldHeader_pintxo-field-header__label__UzrUo font-semibold"
+                    >
+                      Email
+                    </span>
+                  </div>
+                </div>
+                <div className="BaseInput_pintxo-base-input__99D1j text-input relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                    <EmailIcon />
                   </span>
+                  <input
+                    className="BaseInput_pintxo-base-input__input__N7OGR pintxo-typography-body1 w-full px-12 py-4 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent"
+                    aria-label="Email"
+                    placeholder="Email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  {email && (
+                    <button
+                      onClick={() => setEmail("")}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100"
+                      aria-label="Clear email"
+                    >
+                      <CloseIcon />
+                    </button>
+                  )}
                 </div>
               </div>
-              <div className="BaseInput_pintxo-base-input__99D1j text-input relative">
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                  <EmailIcon />
-                </span>
-                <input
-                  className="BaseInput_pintxo-base-input__input__N7OGR pintxo-typography-body1 w-full px-12 py-4 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent"
-                  aria-label="Email"
-                  placeholder="Email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                {email && (
-                  <button
-                    onClick={() => setEmail("")}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100"
-                    aria-label="Clear email"
-                  >
-                    <CloseIcon />
-                  </button>
-                )}
+              <div className="EmailForm_submit__gCVss w-full mt-6">
+                <button
+                  className="BaseButton_pintxo-button__OUsk3 pintxo-typography-callout1 w-full bg-[#017963] text-white font-bold py-3 rounded-[50px] hover:bg-[#00664E] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  disabled={!email}
+                  onClick={handleSubmit}
+                  type="submit"
+                >
+                  <span className="BaseButton_pintxo-button__content__LsfEa">
+                    <span className="BaseButton_pintxo-button__content__label__JfXya">
+                      Continue
+                    </span>
+                  </span>
+                </button>
               </div>
             </div>
-            <div className="EmailForm_submit__gCVss w-full mt-6">
-              <button
-                className="BaseButton_pintxo-button__OUsk3 pintxo-typography-callout1 w-full bg-[#017963] text-white font-bold py-3 rounded-[50px] hover:bg-[#00664E] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-                disabled={!email}
-                onClick={handleSubmit}
-                type="submit"
-              >
-                <span className="BaseButton_pintxo-button__content__LsfEa">
-                  <span className="BaseButton_pintxo-button__content__label__JfXya">
-                    Continue
-                  </span>
-                </span>
-              </button>
-            </div>
-          </div>
+          </section>
         </section>
-      </section>
+      </div>
     </div>
   );
 };
