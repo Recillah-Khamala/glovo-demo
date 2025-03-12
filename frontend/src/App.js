@@ -1,19 +1,26 @@
 import React from "react";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Address from "./components/Address";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import EmailLoginForm from "./components/EmailLoginForm";
+import { useAuth } from "./context/AuthContext";
+import { useSelector } from "react-redux";
 
 const AppContent = () => {
   const { isLoginModalOpen } = useAuth();
+  const location = useLocation();
+  const currentLoginView = useSelector((state) => state.login.currentView);
+  console.log("Current login view:", currentLoginView);
 
-  if (isLoginModalOpen) {
-    return <Login />;
-  }
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  // Render the main layout
+  const MainLayout = () => (
+    <div
+      className={`min-h-screen flex flex-col ${
+        isLoginModalOpen ? "overflow-hidden" : ""
+      }`}
+    >
       <Header />
       <main className="flex-grow">
         <Address />
@@ -21,14 +28,34 @@ const AppContent = () => {
       <Footer />
     </div>
   );
+
+  // Show login modal on top of current page if it's open
+  if (isLoginModalOpen) {
+    console.log("Login modal is open");
+    return (
+      <>
+        <div className="fixed inset-0 overflow-hidden">
+          <MainLayout />
+        </div>
+        <div className="fixed inset-0 z-50 bg-white">
+          <div className="min-h-screen">
+            {currentLoginView === "email" ? <EmailLoginForm /> : <Login />}
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Regular routing when login modal is closed
+  return (
+    <Routes>
+      <Route path="*" element={<MainLayout />} />
+    </Routes>
+  );
 };
 
 function App() {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  );
+  return <AppContent />;
 }
 
 export default App;

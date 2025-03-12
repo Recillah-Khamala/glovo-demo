@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import LoginHeader from "./LoginHeader";
 import emailEnvelope from "../assets/email-envelope.svg";
+import emailIcon from "../assets/email-icon.svg";
+import { useDispatch } from "react-redux";
+import { setLoginView } from "../store/loginSlice";
 
 const BackIcon = () => (
   <svg
@@ -39,31 +43,15 @@ const CloseIcon = () => (
   </svg>
 );
 
-const EmailIcon = () => (
-  <svg
-    className="NamedIcon_pintxo-icon__foreground__RbIjm"
-    width="96"
-    height="96"
-    viewBox="0 0 96 96"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M10 67.5C10 73.299 14.701 78 20.5 78H75.5C81.299 78 86 73.299 86 67.5V28.5C86 26.8796 85.633 25.345 84.9775 23.9747L85.0102 23.941L84.9171 23.8506C83.2023 20.3839 79.6295 18 75.5 18H20.5C16.3702 18 12.7972 20.3843 11.0825 23.8514L10.9902 23.941L11.0227 23.9744C10.3671 25.3448 10 26.8795 10 28.5V67.5ZM17 30.125V67.5C17 69.433 18.567 71 20.5 71H75.5C77.433 71 79 69.433 79 67.5V30.1254L55.5301 54.2756C51.4067 58.5185 44.5937 58.5185 40.4703 54.2756L17 30.125ZM74.22 25H21.7804L45.4902 49.3971C46.8647 50.8114 49.1357 50.8114 50.5102 49.397L74.22 25Z"
-      fill="#161617"
-    />
-  </svg>
-);
-
 const EmailLoginForm = () => {
   const [email, setEmail] = useState("");
   const { toggleLoginModal } = useAuth();
+  const dispatch = useDispatch();
 
   const handleBack = () => {
-    // TODO: Implement back navigation
-    console.log("Back clicked");
+    console.log("Back button clicked");
+    dispatch(setLoginView("login"));
+    console.log("Dispatched setLoginView with 'login'");
   };
 
   const handleSubmit = (e) => {
@@ -73,7 +61,7 @@ const EmailLoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="h-screen bg-white">
       <LoginHeader />
 
       {/* Main Content - Add margin-top to account for fixed header */}
@@ -136,7 +124,7 @@ const EmailLoginForm = () => {
                 </button>
               </div>
             </div>
-            <div className="grid grid-cols-[auto,1fr] gap-8 items-start">
+            <div className="flex flex-col w-full">
               <div className="flex flex-col items-start w-full">
                 <div className="w-full mb-1">
                   <img
@@ -156,7 +144,7 @@ const EmailLoginForm = () => {
                   </p>
                 </div>
 
-                <p className="pintxo-typography-body1 EmailForm_text__wspKT text-zinc-950 text-lg mb-2">
+                <p className="pintxo-typography-body1 EmailForm_text__wspKT text-zinc-950 text-xl mb-2">
                   We'll check if you already have an account. If not, we'll
                   create a new one.
                 </p>
@@ -165,7 +153,7 @@ const EmailLoginForm = () => {
                     <div>
                       <span
                         id=":r9:-header"
-                        className="FieldHeader_pintxo-field-header__label__UzrUo font-semibold"
+                        className="FieldHeader_pintxo-field-header__label__UzrUo font-bold text-base text-zinc-500"
                       >
                         Email
                       </span>
@@ -173,10 +161,16 @@ const EmailLoginForm = () => {
                   </div>
                   <div className="BaseInput_pintxo-base-input__99D1j text-input relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                      <EmailIcon />
+                      <img
+                        src={emailIcon}
+                        alt="email"
+                        width="25"
+                        height="25"
+                        className="opacity-70"
+                      />
                     </span>
                     <input
-                      className="BaseInput_pintxo-base-input__input__N7OGR pintxo-typography-body1 w-full px-12 py-4 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent"
+                      className="BaseInput_pintxo-base-input__input__N7OGR pintxo-typography-body1 w-full px-12 py-4 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent text-zinc-800 text-lg font-semibold"
                       aria-label="Email"
                       placeholder="Email"
                       type="email"
@@ -196,7 +190,7 @@ const EmailLoginForm = () => {
                 </div>
                 <div className="EmailForm_submit__gCVss w-full mt-6">
                   <button
-                    className="BaseButton_pintxo-button__OUsk3 pintxo-typography-callout1 w-full bg-[#017963] text-white font-bold py-3 rounded-[50px] hover:bg-[#00664E] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    className="BaseButton_pintxo-button__OUsk3 pintxo-typography-callout1 w-full bg-[#017963] text-zinc-600 text-lg font-bold py-3 rounded-[50px] hover:bg-[#00664E] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
                     disabled={!email}
                     onClick={handleSubmit}
                     type="submit"

@@ -4,6 +4,8 @@ import LoginHeader from "./LoginHeader";
 import googleIcon from "../assets/google.svg";
 import facebookIcon from "../assets/facebook.svg";
 import EmailLoginForm from "./EmailLoginForm";
+import { useDispatch } from "react-redux";
+import { setLoginView } from "../store/loginSlice";
 // ... existing code ...
 
 // Replace the email icon import with the URL
@@ -69,6 +71,7 @@ const ChevronDownIcon = () => (
 
 const Login = () => {
   const { isLoginModalOpen, toggleLoginModal } = useAuth();
+  const dispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -105,6 +108,12 @@ const Login = () => {
       // TODO: Implement social login logic
       console.log(`${provider} login clicked`);
     }
+  };
+
+  const handleEmailLogin = () => {
+    console.log("Email login clicked");
+    dispatch(setLoginView("email"));
+    console.log("Dispatched setLoginView with 'email'");
   };
 
   if (showEmailForm) {
@@ -327,8 +336,8 @@ const Login = () => {
               data-loading="false"
               data-block="true"
               data-rtl="false"
-              type="submit"
-              onClick={() => handleSocialLogin("Email")}
+              type="button"
+              onClick={handleEmailLogin}
             >
               <span className="BaseButton_pintxo-button__content__LsfEa">
                 <span className="BaseButton_pintxo-button__content__label__JfXya">
