@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import EmailLoginForm from "./components/EmailLoginForm";
 import CreatePassword from "./components/CreatePassword";
+import CreateName from "./components/CreateName";
 import { useAuth } from "./context/AuthContext";
 import { useSelector } from "react-redux";
 
@@ -47,6 +48,8 @@ const AppContent = () => {
               <EmailLoginForm />
             ) : currentLoginView === "create-password" ? (
               <CreatePassword />
+            ) : currentLoginView === "create-name" ? (
+              <CreateName />
             ) : (
               <Login />
             )}

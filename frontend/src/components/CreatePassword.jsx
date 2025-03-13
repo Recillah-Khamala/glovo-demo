@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useDispatch } from "react-redux";
-import { setLoginView } from "../store/loginSlice";
+import { wrappedSetLoginView, wrappedSetPassword } from "../store/loginSlice";
 import LoginHeader from "./LoginHeader";
 import lockIcon from "../assets/lock.svg";
 import eyeOpen from "../assets/eye-open.svg";
@@ -79,13 +79,21 @@ const CreatePassword = () => {
   }, [password]);
 
   const handleBack = () => {
-    dispatch(setLoginView("email"));
+    dispatch(wrappedSetLoginView("email"));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Implement password creation logic
-    console.log("Creating account with password:", password);
+  const handleSubmit = () => {
+    console.log("handleSubmit started");
+    console.log("Current password:", password);
+
+    try {
+      console.log("Dispatching setPassword action");
+      dispatch(wrappedSetPassword(password));
+      console.log("Dispatching setLoginView action");
+      dispatch(wrappedSetLoginView("create-name"));
+    } catch (error) {
+      console.error("Error in handleSubmit:", error);
+    }
   };
 
   return (
@@ -195,7 +203,7 @@ const CreatePassword = () => {
                 className="w-full bg-[#017963] text-white text-lg font-bold py-3 rounded-[50px] hover:bg-[#00664E] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
                 disabled={!password}
                 onClick={handleSubmit}
-                type="submit"
+                type="button"
               >
                 Create Account
               </button>
