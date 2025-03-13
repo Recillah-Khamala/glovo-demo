@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useDispatch } from "react-redux";
 import { setLoginView } from "../store/loginSlice";
@@ -46,6 +46,37 @@ const CreatePassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { toggleLoginModal } = useAuth();
   const dispatch = useDispatch();
+
+  const passwordStrength = useMemo(() => {
+    if (!password) return null;
+
+    const hasMinLength = password.length >= 9;
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (!hasMinLength) {
+      return {
+        message: "Password must contain at least 9 characters",
+        status: "too-weak",
+        color: "text-red-500",
+      };
+    }
+
+    if (hasLetter && hasNumber && hasSpecial) {
+      return {
+        message: "Password strength: Strong",
+        status: "strong",
+        color: "text-green-600",
+      };
+    }
+
+    return {
+      message: "Password strength: Not bad",
+      status: "medium",
+      color: "text-yellow-600",
+    };
+  }, [password]);
 
   const handleBack = () => {
     dispatch(setLoginView("email"));
@@ -125,6 +156,39 @@ const CreatePassword = () => {
                 />
               </button>
             </div>
+
+            {password && (
+              <div className="mt-4 mb-6">
+                <p className={`text-sm font-medium ${passwordStrength?.color}`}>
+                  {passwordStrength?.message}
+                </p>
+                <div className="mt-2 flex gap-1">
+                  <div
+                    className={`h-1 flex-1 rounded-full ${
+                      passwordStrength?.status === "too-weak"
+                        ? "bg-red-500"
+                        : passwordStrength?.status === "medium"
+                        ? "bg-yellow-500"
+                        : "bg-green-500"
+                    }`}
+                  />
+                  <div
+                    className={`h-1 flex-1 rounded-full ${
+                      passwordStrength?.status === "strong"
+                        ? "bg-green-500"
+                        : "bg-gray-200"
+                    }`}
+                  />
+                  <div
+                    className={`h-1 flex-1 rounded-full ${
+                      passwordStrength?.status === "strong"
+                        ? "bg-green-500"
+                        : "bg-gray-200"
+                    }`}
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="w-full mt-6">
               <button
