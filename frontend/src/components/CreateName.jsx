@@ -84,7 +84,7 @@ const CreateName = () => {
         <section className="Login_container__Bh12h">
           <section>
             <div>
-              <div className="flex justify-between mb-8">
+              <div className="flex justify-between mb-6">
                 <button
                   className="p-2 hover:bg-gray-100 rounded-lg"
                   type="button"
@@ -104,26 +104,34 @@ const CreateName = () => {
               </div>
             </div>
             <div>
-              <img
-                alt="name"
-                src={nameTagIcon}
-                width="96"
-                height="96"
-                className="mb-4"
-                style={{ color: "transparent" }}
-              />
-              <p className="text-3xl font-bold mb-4">Tell us your name</p>
-              <p className="text-zinc-950 text-xl mb-6">
-                Nearly there! Just tell us what you want us to call you in your
-                profile.
-              </p>
-
-              <div className="relative mb-6">
+              <div>
+                <img
+                  alt="name"
+                  src={nameTagIcon}
+                  width="96"
+                  height="96"
+                  className="mb-1"
+                  style={{ color: "transparent" }}
+                />
+              </div>
+              <div>
+                <p className="text-3xl font-bold mb-4">Tell us your name</p>
+              </div>
+              <div>
+                <p className="text-zinc-950 text-xl mb-4">
+                  Nearly there! Just tell us what you want us to call you in
+                  your profile.
+                </p>
+              </div>
+              <div className="mb-2">
+                <span className="text-base font-bold text-gray-500">Name</span>
+              </div>
+              <div className="relative mb-4">
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                   <UserIcon />
                 </div>
                 <input
-                  className="w-full pl-12 pr-12 py-4 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent text-zinc-800 text-lg"
+                  className="w-full pl-12 pr-12 py-3 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent text-zinc-800 text-lg"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
