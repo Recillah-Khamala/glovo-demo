@@ -131,7 +131,7 @@ const CreateName = () => {
                   <UserIcon />
                 </div>
                 <input
-                  className="w-full pl-12 pr-12 py-3 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent text-zinc-800 text-lg"
+                  className="w-full pl-12 pr-12 py-3 border rounded-lglj border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent text-zinc-800 text-lg"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
