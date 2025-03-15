@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import EmailLoginForm from "./components/EmailLoginForm";
 import CreatePassword from "./components/CreatePassword";
 import CreateName from "./components/CreateName";
+import HomePage from "./components/HomePage";
 import { useAuth } from "./context/AuthContext";
 import { useSelector } from "react-redux";
 
@@ -15,57 +16,48 @@ const AppContent = () => {
   const currentLoginView = useSelector((state) => state.login.currentView);
   console.log("Current login view:", currentLoginView);
 
-  // Render the main layout
-  const MainLayout = () => (
+  // Show login modal on top of current page if it's open
+  const loginModal = isLoginModalOpen && (
     <div
-      className={`min-h-screen flex flex-col ${
-        isLoginModalOpen ? "overflow-hidden" : ""
+      className={`fixed inset-0 z-50 bg-white ${
+        currentLoginView === "login" ? "overflow-y-auto" : ""
       }`}
     >
-      <Header />
-      <main className="flex-grow">
-        <Address />
-      </main>
-      <Footer />
+      <div className="min-h-screen">
+        {currentLoginView === "email" ? (
+          <EmailLoginForm />
+        ) : currentLoginView === "create-password" ? (
+          <CreatePassword />
+        ) : currentLoginView === "create-name" ? (
+          <CreateName />
+        ) : (
+          <Login />
+        )}
+      </div>
     </div>
   );
 
-  // Show login modal on top of current page if it's open
-  if (isLoginModalOpen) {
-    console.log("Login modal is open");
-    return (
-      <>
-        <div className="fixed inset-0 overflow-hidden">
-          <MainLayout />
-        </div>
-        <div
-          className={`fixed inset-0 z-50 bg-white ${
-            currentLoginView === "login" ? "overflow-y-auto" : ""
-          }`}
-        >
-          <div className="min-h-screen">
-            {currentLoginView === "email" ? (
-              <EmailLoginForm />
-            ) : currentLoginView === "create-password" ? (
-              <CreatePassword />
-            ) : currentLoginView === "create-name" ? (
-              <CreateName />
-            ) : (
-              <Login />
-            )}
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  // Regular routing when login modal is closed
   return (
-    <Routes>
-      <Route path="*" element={<MainLayout />} />
-    </Routes>
+    <>
+      {loginModal}
+      <Routes>
+        <Route path="/" element={<MainLayout />} />
+        <Route path="/home" element={<HomePage />} />
+      </Routes>
+    </>
   );
 };
+
+// Render the main layout
+const MainLayout = () => (
+  <div className={`min-h-screen flex flex-col`}>
+    <Header />
+    <main className="flex-grow">
+      <Address />
+    </main>
+    <Footer />
+  </div>
+);
 
 function App() {
   return <AppContent />;

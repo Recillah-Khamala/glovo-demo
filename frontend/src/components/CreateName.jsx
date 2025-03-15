@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useDispatch } from "react-redux";
-import { setLoginView } from "../store/loginSlice";
+import { useNavigate } from "react-router-dom";
+import { setLoginView, setName } from "../store/loginSlice";
 import LoginHeader from "./LoginHeader";
 import nameTagIcon from "../assets/name-tag.svg";
 
@@ -63,9 +64,10 @@ const UserIcon = () => (
 );
 
 const CreateName = () => {
-  const [name, setName] = useState("");
+  const [name, setNameValue] = useState("");
   const { toggleLoginModal } = useAuth();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleBack = () => {
     dispatch(setLoginView("create-password"));
@@ -73,8 +75,18 @@ const CreateName = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Implement name submission logic
     console.log("Submitting name:", name);
+
+    try {
+      // Store name in Redux state
+      dispatch(setName(name));
+      // Close the login modal
+      toggleLoginModal();
+      // Navigate to home page
+      navigate("/home");
+    } catch (error) {
+      console.error("Error in handleSubmit:", error);
+    }
   };
 
   return (
@@ -134,13 +146,13 @@ const CreateName = () => {
                   className="w-full pl-12 pr-12 py-3 border rounded-lglj border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent text-zinc-800 text-lg"
                   type="text"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setNameValue(e.target.value)}
                   placeholder="Your name"
                   aria-label="Name"
                 />
                 {name && (
                   <button
-                    onClick={() => setName("")}
+                    onClick={() => setNameValue("")}
                     className="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100"
                     aria-label="Clear name"
                   >
