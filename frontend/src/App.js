@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
 import Address from "./components/Address";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
@@ -51,7 +50,6 @@ const AppContent = () => {
 // Render the main layout
 const MainLayout = () => (
   <div className={`min-h-screen flex flex-col`}>
-    <Header />
     <main className="flex-grow">
       <Address />
     </main>
@@ -59,8 +57,8 @@ const MainLayout = () => (
   </div>
 );
 
-function App() {
+const App = () => {
   return <AppContent />;
-}
+};
 
 export default App;
