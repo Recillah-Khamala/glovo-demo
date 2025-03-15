@@ -105,14 +105,20 @@ const Address = () => {
   const { isLoginModalOpen } = useAuth();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollThreshold = 200;
-      setShowScrollButton(window.scrollY > scrollThreshold);
-    };
+    // Only add scroll listener if login modal is closed
+    if (!isLoginModalOpen) {
+      const handleScroll = () => {
+        const scrollThreshold = 200;
+        setShowScrollButton(window.scrollY > scrollThreshold);
+      };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    } else {
+      // Reset scroll button state when modal is open
+      setShowScrollButton(false);
+    }
+  }, [isLoginModalOpen]); // Add isLoginModalOpen as dependency
 
   return (
     <>
@@ -259,8 +265,8 @@ const Address = () => {
           />
         </div>
 
-        {/* Scroll to top button */}
-        {showScrollButton && <ScrollToTopButton />}
+        {/* Only show scroll button if modal is closed */}
+        {!isLoginModalOpen && showScrollButton && <ScrollToTopButton />}
       </div>
     </>
   );

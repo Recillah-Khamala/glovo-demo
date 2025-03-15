@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Address from "./components/Address";
 import Footer from "./components/Footer";
@@ -13,16 +13,22 @@ import { useSelector } from "react-redux";
 const AppContent = () => {
   const { isLoginModalOpen } = useAuth();
   const currentLoginView = useSelector((state) => state.login.currentView);
-  console.log("Current login view:", currentLoginView);
+
+  useEffect(() => {
+    if (isLoginModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isLoginModalOpen]);
 
   // Show login modal on top of current page if it's open
   const loginModal = isLoginModalOpen && (
-    <div
-      className={`fixed inset-0 z-50 bg-white ${
-        currentLoginView === "login" ? "overflow-y-auto" : ""
-      }`}
-    >
-      <div className="min-h-screen">
+    <div className="fixed inset-0 z-50 bg-white overflow-hidden">
+      <div className="h-full overflow-y-auto">
         {currentLoginView === "email" ? (
           <EmailLoginForm />
         ) : currentLoginView === "create-password" ? (
@@ -39,10 +45,12 @@ const AppContent = () => {
   return (
     <>
       {loginModal}
-      <Routes>
-        <Route path="/" element={<MainLayout />} />
-        <Route path="/home" element={<HomePage />} />
-      </Routes>
+      <div className={isLoginModalOpen ? "overflow-hidden h-screen" : ""}>
+        <Routes>
+          <Route path="/" element={<MainLayout />} />
+          <Route path="/home" element={<HomePage />} />
+        </Routes>
+      </div>
     </>
   );
 };
