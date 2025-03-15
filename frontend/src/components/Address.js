@@ -1,6 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+const ScrollToTopButton = () => (
+  <button
+    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    className="fixed bottom-8 right-8 bg-[#017963] text-white p-3 rounded-full shadow-lg hover:bg-[#00664E] transition-all transform hover:scale-110 z-50"
+    aria-label="Scroll to top"
+  >
+    <svg
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M5 10l7-7m0 0l7 7m-7-7v18"
+      />
+    </svg>
+  </button>
+);
 
 const Address = () => {
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollThreshold = 200;
+      setShowScrollButton(window.scrollY > scrollThreshold);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleSmoothScroll = (elementId) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="relative mb-0">
       <div
@@ -143,6 +185,9 @@ const Address = () => {
           className="absolute bottom-[30px] left-0 w-full h-auto md:hidden block"
         />
       </div>
+
+      {/* Scroll to top button */}
+      {showScrollButton && <ScrollToTopButton />}
     </div>
   );
 };
