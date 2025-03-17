@@ -175,11 +175,11 @@ const HomePage = () => {
             {/* Search Bar */}
             <div className="relative z-10 max-w-7xl mx-auto">
               <div className="py-4">
-                <div className="relative">
+                <div className="relative max-w-[700px] mx-auto">
                   <input
                     type="text"
                     placeholder="What can we get you?"
-                    className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent"
+                    className="w-full pl-12 pr-4 py-2 rounded-3xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent text-sm"
                   />
                   <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
                     <SearchIcon />
