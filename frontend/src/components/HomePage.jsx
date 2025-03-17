@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import textLogo from "../assets/glovo-text-logo.svg";
 import balloonLogo from "../assets/glovo-balloon-logo.svg";
+
+const styles = `
+  .curved-bottom:before {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+    height: 88px;
+    background-color: white;
+    border-top-left-radius: 43%;
+    border-top-right-radius: 43%;
+  }
+`;
 
 const SearchIcon = () => (
   <svg
@@ -91,32 +104,27 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <style>{styles}</style>
       {/* Header */}
-      <header className="bg-yellow-400 sticky top-0 z-40 shadow-md">
+      <header className="bg-[#FFC244FF] sticky top-0 z-40 shadow-md">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between py-4">
-            <div className="flex items-center space-x-8">
-              <div className="flex items-center">
-                <img
-                  src={balloonLogo}
-                  alt="Glovo"
-                  className="block h-10"
-                />
-              </div>
-              <div className="flex items-center space-x-2">
-                <img
-                  src="https://glovoapp.com/images/svg/bicycle.svg"
-                  alt=""
-                  className="w-5 h-5"
-                />
-                <span className="text-sm">Delivering to</span>
-                <span className="font-medium">Belmont Court</span>
-                <img
-                  src="https://glovoapp.com/images/landing/dropdown-black.svg"
-                  alt=""
-                  className="w-4 h-4"
-                />
-              </div>
+            <div className="flex items-center">
+              <img src={balloonLogo} alt="Glovo" className="block h-10" />
+            </div>
+            <div className="flex items-center space-x-2">
+              <img
+                src="https://glovoapp.com/images/svg/bicycle.svg"
+                alt=""
+                className="w-5 h-5"
+              />
+              <span className="text-sm">Delivering to</span>
+              <span className="font-medium">Belmont Court</span>
+              <img
+                src="https://glovoapp.com/images/landing/dropdown-black.svg"
+                alt=""
+                className="w-4 h-4"
+              />
             </div>
             <div className="flex items-center space-x-4">
               <button className="flex items-center space-x-2 px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-50">
@@ -129,76 +137,64 @@ const HomePage = () => {
               </button>
             </div>
           </div>
-
-          {/* Search Bar */}
-          <div className="py-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="What can we get you?"
-                className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent"
-              />
-              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                <SearchIcon />
-              </div>
-            </div>
-          </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {categories.map((category) => (
-            <div
-              key={category.id}
-              className="flex flex-col items-center"
-              onClick={() => {
-                // Smooth scroll to content section when category is clicked
-                const element = document.getElementById(
-                  `section-${category.id}`
-                );
-                if (element) {
-                  element.scrollIntoView({ behavior: "smooth" });
-                }
-              }}
-            >
-              <div className="w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center mb-4 hover:scale-105 transition-transform cursor-pointer">
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="w-16 h-16"
-                />
-              </div>
-              <span className="text-center font-medium">{category.name}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Example content sections for each category */}
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            id={`section-${category.id}`}
-            className="mt-16 pb-16 border-b last:border-b-0"
-          >
-            <h2 className="text-2xl font-bold mb-8">{category.name}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Example placeholder content */}
-              {[1, 2, 3, 4, 5, 6].map((item) => (
+      <div className="relative">
+        <main className="relative bg-[#FFC244FF] px-4 py-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
+              {categories.map((category) => (
                 <div
-                  key={item}
-                  className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow"
+                  key={category.id}
+                  className="flex flex-col items-center"
+                  onClick={() => {
+                    const element = document.getElementById(
+                      `section-${category.id}`
+                    );
+                    if (element) {
+                      element.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
                 >
-                  <div className="bg-gray-200 w-full h-40 rounded-lg mb-4"></div>
-                  <h3 className="font-medium mb-2">Example Item {item}</h3>
-                  <p className="text-gray-600">Lorem ipsum dolor sit amet</p>
+                  <div className="w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center mb-4 hover:scale-105 transition-transform cursor-pointer">
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="w-16 h-16"
+                    />
+                  </div>
+                  <span className="text-center font-medium">
+                    {category.name}
+                  </span>
                 </div>
               ))}
             </div>
+
+            {/* Search Bar */}
+            <div className="relative z-10 max-w-7xl mx-auto">
+              <div className="py-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="What can we get you?"
+                    className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent"
+                  />
+                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <SearchIcon />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        ))}
-      </main>
+        </main>
+
+        {/* Curved bottom section */}
+        <div className="relative bg-[#FFC244FF] curved-bottom h-24">
+          {/* Empty div for curved bottom */}
+        </div>
+      </div>
 
       {/* Scroll to top button */}
       {showScrollButton && <ScrollToTopButton />}
