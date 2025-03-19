@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../redux/actions/authActions";
 import balloonLogo from "../assets/glovo-balloon-logo.svg";
 
 const styles = `
@@ -96,10 +97,19 @@ const AddressModal = ({ isOpen, onClose }) => {
 };
 
 const HomePage = () => {
-  const userName = useSelector((state) => state.login.name);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const navigate = useNavigate();
+
+  const handleAuthClick = () => {
+    if (isAuthenticated) {
+      dispatch(logout());
+    } else {
+      navigate('/login');
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -175,7 +185,7 @@ const HomePage = () => {
             </div>
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => navigate("/login")}
+                onClick={handleAuthClick}
                 className="flex items-center space-x-2 px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-50 bg-[#00846BFF]"
               >
                 <img
@@ -183,7 +193,7 @@ const HomePage = () => {
                   alt=""
                   className="w-5 h-5"
                 />
-                <span>{userName || "Login"}</span>
+                <span>{isAuthenticated ? user.name : "Login"}</span>
               </button>
             </div>
           </div>

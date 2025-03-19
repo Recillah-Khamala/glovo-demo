@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import Address from "./components/Address";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
@@ -43,7 +45,13 @@ const AppContent = () => {
   );
 
   return (
-    <>
+    <Provider store={store}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
       {loginModal}
       <div className={isLoginModalOpen ? "overflow-hidden h-screen" : ""}>
         <Routes>
@@ -51,7 +59,7 @@ const AppContent = () => {
           <Route path="/home" element={<HomePage />} />
         </Routes>
       </div>
-    </>
+    </Provider>
   );
 };
 
