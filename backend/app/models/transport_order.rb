@@ -1,2 +1,0 @@
-class TransportOrder < ApplicationRecord
-end

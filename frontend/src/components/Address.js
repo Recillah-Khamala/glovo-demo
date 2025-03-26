@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import textLogo from "../assets/glovo-text-logo.svg";
 import balloonLogo from "../assets/glovo-balloon-logo.svg";
+import Login from "./Login";
 
 // Header Components
-const Header = () => {
-  const { toggleLoginModal } = useAuth();
-
+const Header = ({ onLoginClick }) => {
   return (
     <header className="bg-[#FFC244FF] fixed w-full z-50">
       <div className="mx-auto flex justify-between items-center box-border w-full max-w-[calc(1124px+15%)] py-2 md:py-4 px-4 md:px-[7.5%]">
@@ -28,7 +27,7 @@ const Header = () => {
           <button
             type="button"
             aria-label="Login"
-            onClick={toggleLoginModal}
+            onClick={onLoginClick}
             className="flex items-center justify-center bg-[#00A082FF] hover:bg-[#008F72] active:bg-[#007B62] text-white transition-colors duration-200 rounded-full px-3 md:px-4 py-1.5 md:py-2 focus:outline-none focus:ring-2 focus:ring-[#00A082] focus:ring-offset-2"
           >
             <div className="flex items-center px-1 md:px-2 py-0.5">
@@ -74,27 +73,29 @@ const ScrollToTopButton = () => (
 
 const Address = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const { isLoginModalOpen } = useAuth();
+  const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
-    // Only add scroll listener if login modal is closed
-    if (!isLoginModalOpen) {
-      const handleScroll = () => {
-        const scrollThreshold = 200;
-        setShowScrollButton(window.scrollY > scrollThreshold);
-      };
+    const handleScroll = () => {
+      const scrollThreshold = 200;
+      setShowScrollButton(window.scrollY > scrollThreshold);
+    };
 
-      window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
-    } else {
-      // Reset scroll button state when modal is open
-      setShowScrollButton(false);
-    }
-  }, [isLoginModalOpen]); // Add isLoginModalOpen as dependency
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleLoginClick = () => {
+    setShowLogin(true);
+  };
+
+  if (showLogin) {
+    return <Login onBack={() => setShowLogin(false)} />;
+  }
 
   return (
     <>
-      {!isLoginModalOpen && <Header />}
+      <Header onLoginClick={handleLoginClick} />
       <div className="relative mb-0">
         <div
           data-test-id="address-container-section"
@@ -240,7 +241,7 @@ const Address = () => {
         </div>
 
         {/* Only show scroll button if modal is closed */}
-        {!isLoginModalOpen && showScrollButton && <ScrollToTopButton />}
+        {!showLogin && showScrollButton && <ScrollToTopButton />}
       </div>
     </>
   );

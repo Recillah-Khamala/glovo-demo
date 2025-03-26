@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentView: "login", // 'login' | 'email' | 'create-password' | 'create-name'
-  email: "", // store email for registration flow
+  currentView: null, // null | 'email' | 'create-password' | 'create-name'
+  email: "",
   password: "",
   name: "",
 };
@@ -12,19 +12,15 @@ export const loginSlice = createSlice({
   initialState,
   reducers: {
     setLoginView: (state, action) => {
-      console.log("setLoginView reducer called with:", action);
       state.currentView = action.payload;
     },
     setEmail: (state, action) => {
-      console.log("setEmail reducer called with:", action);
       state.email = action.payload;
     },
     setPassword: (state, action) => {
-      console.log("setPassword reducer called with:", action);
       state.password = action.payload;
     },
     setName: (state, action) => {
-      console.log("setName reducer called with:", action);
       state.name = action.payload;
     },
   },

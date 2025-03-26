@@ -6,6 +6,8 @@ import facebookIcon from "../assets/facebook.svg";
 import EmailLoginForm from "./EmailLoginForm";
 import { useDispatch } from "react-redux";
 import { setLoginView } from "../store/loginSlice";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 // ... existing code ...
 
 // Replace the email icon import with the URL
@@ -69,14 +71,27 @@ const ChevronDownIcon = () => (
   </svg>
 );
 
-const Login = () => {
-  const { isLoginModalOpen, toggleLoginModal } = useAuth();
+const Login = ({ onBack }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const currentLoginView = useSelector((state) => state.login?.currentView);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [showEmailForm, setShowEmailForm] = useState(false);
   const dropdownRef = useRef(null);
+
+  // Reset login view when component mounts
+  useEffect(() => {
+    dispatch(setLoginView(null));
+  }, [dispatch]);
+
+  // Redirect to home if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/home');
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -89,7 +104,10 @@ const Login = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  if (!isLoginModalOpen) return null;
+  // Show email form if currentLoginView is "email"
+  if (currentLoginView === "email") {
+    return <EmailLoginForm onBack={() => dispatch(setLoginView(null))} />;
+  }
 
   const handleWhatsAppLogin = () => {
     // TODO: Implement WhatsApp login logic
@@ -103,41 +121,20 @@ const Login = () => {
 
   const handleSocialLogin = (provider) => {
     if (provider === "Email") {
-      setShowEmailForm(true);
+      dispatch(setLoginView("email"));
     } else {
       // TODO: Implement social login logic
       console.log(`${provider} login clicked`);
     }
   };
 
-  const handleEmailLogin = () => {
-    console.log("Email login clicked");
-    dispatch(setLoginView("email"));
-    console.log("Dispatched setLoginView with 'email'");
-  };
-
-  if (showEmailForm) {
-    return <EmailLoginForm onBack={() => setShowEmailForm(false)} />;
-  }
-
   return (
     <div className="min-h-screen bg-white">
-      <LoginHeader />
+      <LoginHeader onBack={onBack} />
 
       {/* Login Content */}
       <div className="max-w-md mx-auto px-4 py-2" style={{ marginTop: "84px" }}>
         <div className="flex flex-col items-center">
-          <div className="w-full mb-8 flex justify-end">
-            <button
-              onClick={toggleLoginModal}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-700"
-              aria-label="Close"
-              type="button"
-            >
-              <CloseIcon />
-            </button>
-          </div>
-
           <p className="text-4xl font-bold pb-3">Welcome</p>
           <p className="text-lg">Continue with one of the following options</p>
 
@@ -337,7 +334,7 @@ const Login = () => {
               data-block="true"
               data-rtl="false"
               type="button"
-              onClick={handleEmailLogin}
+              onClick={() => handleSocialLogin("Email")}
             >
               <span className="BaseButton_pintxo-button__content__LsfEa">
                 <span className="BaseButton_pintxo-button__content__label__JfXya">

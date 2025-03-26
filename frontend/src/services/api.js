@@ -1,101 +1,48 @@
-const API_BASE_URL = 'http://localhost:3000/api/v1';
+import axios from 'axios';
 
-// Helper function to get auth token from localStorage
-const getAuthToken = () => localStorage.getItem('authToken');
+const API_URL = process.env.REACT_APP_API_URL;
 
-// Helper function to set auth token in localStorage
-const setAuthToken = (token) => localStorage.setItem('authToken', token);
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-// Helper function to remove auth token from localStorage
-const removeAuthToken = () => localStorage.removeItem('authToken');
-
-export const api = {
-  async login(credentials) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
-      // Store the token
-      setAuthToken(data.token);
-      return data;
-    } catch (error) {
-      throw error;
+// Add a request interceptor to add the auth token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+    return config;
   },
-
-  async register(userData) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ authentication: userData }), // Match backend params structure
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.errors?.join(', ') || 'Registration failed');
-      }
-
-      // Store the token
-      setAuthToken(data.token);
-      return data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  async logout() {
-    try {
-      const token = getAuthToken();
-      if (!token) return;
-
-      const response = await fetch(`${API_BASE_URL}/auth/logout`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Logout failed');
-      }
-
-      // Remove the token
-      removeAuthToken();
-      return response.json();
-    } catch (error) {
-      // Even if the request fails, we should still remove the token
-      removeAuthToken();
-      throw error;
-    }
-  },
-
-  // Helper function to check if user is authenticated
-  isAuthenticated() {
-    return !!getAuthToken();
-  },
-
-  // Helper function to get auth headers
-  getAuthHeaders() {
-    const token = getAuthToken();
-    return {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    };
+  (error) => {
+    return Promise.reject(error);
   }
-}; 
+);
+
+// Auth endpoints
+export const authAPI = {
+  login: (credentials) => api.post('/auth/login', credentials),
+  register: (userData) => api.post('/auth/register', userData),
+  logout: () => {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  },
+};
+
+// User endpoints
+export const userAPI = {
+  getProfile: () => api.get('/profile'),
+  updateProfile: (data) => api.put('/profile', data),
+};
+
+// Password reset endpoints
+export const passwordResetAPI = {
+  requestReset: (email) => api.post('/password_reset', { email }),
+  resetPassword: (token, password) => api.put('/password_reset', { token, password }),
+};
+
+export default api; 

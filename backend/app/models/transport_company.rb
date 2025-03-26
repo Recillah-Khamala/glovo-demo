@@ -1,2 +1,0 @@
-class TransportCompany < ApplicationRecord
-end
