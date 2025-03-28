@@ -5,6 +5,7 @@ import emailEnvelope from "../assets/email-envelope.svg";
 import emailIcon from "../assets/email-icon.svg";
 import { useDispatch } from "react-redux";
 import { setLoginView, setEmail } from "../store/loginSlice";
+import { useNavigate } from "react-router-dom";
 
 const BackIcon = () => (
   <svg
@@ -46,11 +47,16 @@ const EmailLoginForm = () => {
   const [emailValue, setEmailValue] = useState("");
   const { toggleLoginModal } = useAuth();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleBack = () => {
     console.log("Back button clicked");
     dispatch(setLoginView("login"));
     console.log("Dispatched setLoginView with 'login'");
+  };
+
+  const handleClose = () => {
+    navigate('/home');
   };
 
   const handleSubmit = async (e) => {
@@ -115,7 +121,7 @@ const EmailLoginForm = () => {
                   data-rtl="false"
                   type="button"
                   aria-label="Close"
-                  onClick={toggleLoginModal}
+                  onClick={handleClose}
                 >
                   <span className="BaseButton_pintxo-button__content__LsfEa">
                     <span className="BaseButton_pintxo-button__content__label__JfXya">

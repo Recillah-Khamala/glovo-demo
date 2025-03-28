@@ -73,15 +73,8 @@ const AppContent = () => {
           {/* Login page */}
           <Route path="/login" element={<Login />} />
           
-          {/* Protected routes - only accessible after login */}
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
-                <HomePage />
-              </ProtectedRoute>
-            }
-          />
+          {/* Home page - publicly accessible */}
+          <Route path="/home" element={<HomePage />} />
           
           {/* Address page - only accessible after login */}
           <Route

@@ -106,6 +106,7 @@ const Login = ({ onBack }) => {
     return <EmailLoginForm onBack={() => dispatch(setLoginView(null))} />;
   }
 
+  // Show main login view by default
   const handleWhatsAppLogin = () => {
     // TODO: Implement WhatsApp login logic
     console.log("WhatsApp login clicked");
@@ -130,13 +131,35 @@ const Login = ({ onBack }) => {
       <LoginHeader onBack={onBack} />
 
       {/* Login Content */}
-      <div className="max-w-md mx-auto px-4 py-2" style={{ marginTop: "84px" }}>
-        <div className="flex flex-col items-center">
-          <p className="text-4xl font-bold pb-3">Welcome</p>
-          <p className="text-lg">Continue with one of the following options</p>
+      <div className="max-w-md mx-auto px-4 py-8 relative" style={{ marginTop: "120px" }}>
+        <div className="flex flex-col items-center space-y-6">
+          {/* Close Button */}
+          <button
+            onClick={() => navigate('/home')}
+            className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            aria-label="Close login"
+          >
+            <svg
+              className="w-6 h-6 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+
+          <p className="text-4xl font-bold">Welcome</p>
+          <p className="text-lg text-gray-600">Continue with one of the following options</p>
 
           {/* Phone Number Input Section */}
-          <div className="w-full mt-6 flex gap-3">
+          <div className="w-full mt-8 flex gap-3">
             {/* Prefix Dropdown */}
             <div className="w-32" ref={dropdownRef}>
               <div className="Field_pintxo-field-container__oICbz">
