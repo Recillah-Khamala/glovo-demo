@@ -3,6 +3,8 @@ import LoginHeader from "./LoginHeader";
 import googleIcon from "../assets/google.svg";
 import facebookIcon from "../assets/facebook.svg";
 import EmailLoginForm from "./EmailLoginForm";
+import CreatePassword from "./CreatePassword";
+import CreateName from "./CreateName";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoginView } from "../store/loginSlice";
 import { useNavigate } from "react-router-dom";
@@ -78,11 +80,6 @@ const Login = ({ onBack }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Reset login view when component mounts
-  useEffect(() => {
-    dispatch(setLoginView(null));
-  }, [dispatch]);
-
   // Redirect to home if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
@@ -104,6 +101,16 @@ const Login = ({ onBack }) => {
   // Show email form if currentLoginView is "email"
   if (currentLoginView === "email") {
     return <EmailLoginForm onBack={() => dispatch(setLoginView(null))} />;
+  }
+
+  // Show create password form if currentLoginView is "create-password"
+  if (currentLoginView === "create-password") {
+    return <CreatePassword />;
+  }
+
+  // Show create name form if currentLoginView is "create-name"
+  if (currentLoginView === "create-name") {
+    return <CreateName />;
   }
 
   // Show main login view by default
