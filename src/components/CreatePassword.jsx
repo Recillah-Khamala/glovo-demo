@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from "react";
-import { useAuth } from "../context/AuthContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { wrappedSetLoginView, wrappedSetPassword } from "../store/loginSlice";
@@ -45,7 +44,6 @@ const CloseIcon = () => (
 const CreatePassword = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { toggleLoginModal } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

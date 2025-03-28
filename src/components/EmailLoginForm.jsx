@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
 import LoginHeader from "./LoginHeader";
 import emailEnvelope from "../assets/email-envelope.svg";
 import emailIcon from "../assets/email-icon.svg";
@@ -45,7 +44,6 @@ const CloseIcon = () => (
 
 const EmailLoginForm = () => {
   const [emailValue, setEmailValue] = useState("");
-  const { toggleLoginModal } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
