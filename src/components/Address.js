@@ -33,7 +33,7 @@ const LoginButton = ({ onClick }) => (
       type="button"
       aria-label="Login"
       onClick={onClick}
-      className="flex items-center justify-center bg-[#00A082FF] hover:bg-[#008F72] active:bg-[#007B62] text-white transition-colors duration-200 rounded-full px-3 md:px-4 py-1.5 md:py-2 focus:outline-none focus:ring-2 focus:ring-[#00A082] focus:ring-offset-2"
+      className={`flex items-center justify-center bg-[${COLORS.button.primary}] hover:bg-[${COLORS.button.hover}] active:bg-[${COLORS.button.active}] text-white transition-colors duration-200 rounded-full px-3 md:px-4 py-1.5 md:py-2 focus:outline-none focus:ring-2 focus:ring-[${COLORS.button.focus}] focus:ring-offset-2`}
     >
       <div className="flex items-center px-1 md:px-2 py-0.5">
         <img
@@ -53,7 +53,7 @@ const LoginButton = ({ onClick }) => (
 // Header Component
 const Header = ({ onLoginClick }) => {
   return (
-    <header className="bg-[#FFC244FF] fixed w-full z-[100] shadow-md">
+    <header className={`bg-[${COLORS.header}] fixed w-full z-[100]`}>
       <div className="mx-auto flex justify-between items-center box-border w-full max-w-[calc(1124px+15%)] py-2 md:py-4 px-4 md:px-[7.5%]">
         <Logo />
         <LoginButton onClick={onLoginClick} />
@@ -113,9 +113,9 @@ const Address = () => {
       <div className="relative mb-0">
         <div
           data-test-id="address-container-section"
-          className="relative flex flex-col items-center bg-[#FFC244FF] pt-2 mt-10 mb-[123px]"
+          className="relative flex flex-col items-center bg-[#FFC244FF] pt-10 mb-[123px]"
         >
-          <div className="container mx-auto px-20 mt-6">
+          <div className="container mx-auto px-20 pt-6">
             <div className="flex flex-col md:flex-row md:items-center max-w-7xl mx-auto">
               <div
                 data-test-id="address-animation"
