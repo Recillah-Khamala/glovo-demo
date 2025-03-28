@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Address from "./components/Address";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
 import HomePage from "./components/HomePage";
-import { useAuth } from "./context/AuthContext";
 import { useSelector, useDispatch } from "react-redux";
 import { setLoginView } from "./store/loginSlice";
 

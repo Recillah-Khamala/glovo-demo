@@ -1,48 +1,62 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
 import textLogo from "../assets/glovo-text-logo.svg";
 import balloonLogo from "../assets/glovo-balloon-logo.svg";
 import Login from "./Login";
 
-// Header Components
+// Constants
+const COLORS = {
+  header: "#FFC244FF",
+  button: {
+    primary: "#00A082FF",
+    hover: "#008F72",
+    active: "#007B62",
+    focus: "#00A082"
+  }
+};
+
+// Logo Component
+const Logo = () => (
+  <div>
+    <a href="/" className="flex hover:opacity-80 transition-opacity">
+      <div className="flex items-center">
+        <img src={textLogo} alt="Glovo" className="hidden md:block h-8" />
+        <img src={balloonLogo} alt="Glovo" className="block md:hidden h-8" />
+      </div>
+    </a>
+  </div>
+);
+
+// Login Button Component
+const LoginButton = ({ onClick }) => (
+  <div>
+    <button
+      type="button"
+      aria-label="Login"
+      onClick={onClick}
+      className="flex items-center justify-center bg-[#00A082FF] hover:bg-[#008F72] active:bg-[#007B62] text-white transition-colors duration-200 rounded-full px-3 md:px-4 py-1.5 md:py-2 focus:outline-none focus:ring-2 focus:ring-[#00A082] focus:ring-offset-2"
+    >
+      <div className="flex items-center px-1 md:px-2 py-0.5">
+        <img
+          src="https://glovoapp.com/images/svg/login.svg"
+          alt=""
+          aria-hidden="true"
+          className="w-3 h-3 md:w-4 md:h-4"
+        />
+        <span className="pl-1 md:pl-2 font-bold text-white text-sm md:text-[15px]">
+          Login
+        </span>
+      </div>
+    </button>
+  </div>
+);
+
+// Header Component
 const Header = ({ onLoginClick }) => {
   return (
-    <header className="bg-[#FFC244FF] fixed w-full z-50">
+    <header className="bg-[#FFC244FF] fixed w-full z-[100] shadow-md">
       <div className="mx-auto flex justify-between items-center box-border w-full max-w-[calc(1124px+15%)] py-2 md:py-4 px-4 md:px-[7.5%]">
-        {/* Logo Section */}
-        <div>
-          <a href="/" className="flex hover:opacity-80 transition-opacity">
-            <div className="flex items-center">
-              <img src={textLogo} alt="Glovo" className="hidden md:block h-8" />
-              <img
-                src={balloonLogo}
-                alt="Glovo"
-                className="block md:hidden h-8"
-              />
-            </div>
-          </a>
-        </div>
-        {/* Login Button */}
-        <div>
-          <button
-            type="button"
-            aria-label="Login"
-            onClick={onLoginClick}
-            className="flex items-center justify-center bg-[#00A082FF] hover:bg-[#008F72] active:bg-[#007B62] text-white transition-colors duration-200 rounded-full px-3 md:px-4 py-1.5 md:py-2 focus:outline-none focus:ring-2 focus:ring-[#00A082] focus:ring-offset-2"
-          >
-            <div className="flex items-center px-1 md:px-2 py-0.5">
-              <img
-                src="https://glovoapp.com/images/svg/login.svg"
-                alt=""
-                aria-hidden="true"
-                className="w-3 h-3 md:w-4 md:h-4"
-              />
-              <span className="pl-1 md:pl-2 font-bold text-white text-sm md:text-[15px]">
-                Login
-              </span>
-            </div>
-          </button>
-        </div>
+        <Logo />
+        <LoginButton onClick={onLoginClick} />
       </div>
     </header>
   );
@@ -240,7 +254,7 @@ const Address = () => {
           />
         </div>
 
-        {/* Only show scroll button if modal is closed */}
+        {/* Only show scroll button if login is not shown */}
         {!showLogin && showScrollButton && <ScrollToTopButton />}
       </div>
     </>

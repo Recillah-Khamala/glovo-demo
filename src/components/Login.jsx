@@ -1,14 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
 import LoginHeader from "./LoginHeader";
 import googleIcon from "../assets/google.svg";
 import facebookIcon from "../assets/facebook.svg";
 import EmailLoginForm from "./EmailLoginForm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoginView } from "../store/loginSlice";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-// ... existing code ...
+import { useNavigate } from "react-router-dom";
 
 // Replace the email icon import with the URL
 const emailIcon = "https://glovoapp.com/_next/static/media/email.caf0e00b.svg";

@@ -1,4 +1,4 @@
-import { api } from '../../services/api';
+import { authAPI } from '../../services/api';
 
 export const loginStart = () => ({
   type: 'LOGIN_START',
@@ -30,8 +30,8 @@ export const logoutFailure = (error) => ({
 export const login = (credentials) => async (dispatch) => {
   try {
     dispatch(loginStart());
-    const response = await api.login(credentials);
-    dispatch(loginSuccess(response.user));
+    const response = await authAPI.login(credentials);
+    dispatch(loginSuccess(response.data.user));
     return response;
   } catch (error) {
     dispatch(loginFailure(error.message));
@@ -42,7 +42,7 @@ export const login = (credentials) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     dispatch(logoutStart());
-    await api.logout();
+    await authAPI.logout();
     dispatch(logoutSuccess());
   } catch (error) {
     dispatch(logoutFailure(error.message));
