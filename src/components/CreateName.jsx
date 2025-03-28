@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setLoginView, setName } from "../store/loginSlice";
+import { loginSuccess } from "../redux/actions/authActions";
 import LoginHeader from "./LoginHeader";
 import nameTagIcon from "../assets/name-tag.svg";
 
@@ -65,9 +66,10 @@ const UserIcon = () => (
 
 const CreateName = () => {
   const [name, setNameValue] = useState("");
-  const { toggleLoginModal } = useAuth();
+  const { toggleLoginModal, login } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const email = useSelector((state) => state.login.email);
 
   const handleBack = () => {
     dispatch(setLoginView("create-password"));
@@ -84,8 +86,23 @@ const CreateName = () => {
     try {
       // Store name in Redux state
       dispatch(setName(name));
+      
+      // Create user object with all registration data
+      const user = {
+        name,
+        email,
+        isAuthenticated: true
+      };
+
+      // Update auth state in Redux
+      dispatch(loginSuccess(user));
+      
+      // Update auth context
+      login();
+
       // Close the login modal
       toggleLoginModal();
+      
       // Navigate to home page
       navigate("/home");
     } catch (error) {
