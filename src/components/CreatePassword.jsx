@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { wrappedSetLoginView, wrappedSetPassword } from "../store/loginSlice";
 import LoginHeader from "./LoginHeader";
 import lockIcon from "../assets/lock.svg";
@@ -46,6 +47,7 @@ const CreatePassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { toggleLoginModal } = useAuth();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const passwordStrength = useMemo(() => {
     if (!password) return null;
@@ -82,6 +84,10 @@ const CreatePassword = () => {
     dispatch(wrappedSetLoginView("email"));
   };
 
+  const handleClose = () => {
+    navigate('/home');
+  };
+
   const handleSubmit = () => {
     console.log("handleSubmit started");
     console.log("Current password:", password);
@@ -115,7 +121,7 @@ const CreatePassword = () => {
                 className="p-2 hover:bg-gray-100 rounded-lg"
                 type="button"
                 aria-label="Close"
-                onClick={toggleLoginModal}
+                onClick={handleClose}
               >
                 <CloseIcon />
               </button>

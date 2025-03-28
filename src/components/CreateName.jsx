@@ -73,6 +73,10 @@ const CreateName = () => {
     dispatch(setLoginView("create-password"));
   };
 
+  const handleClose = () => {
+    navigate('/home');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitting name:", name);
@@ -109,7 +113,7 @@ const CreateName = () => {
                   className="p-2 hover:bg-gray-100 rounded-lg"
                   type="button"
                   aria-label="Close"
-                  onClick={toggleLoginModal}
+                  onClick={handleClose}
                 >
                   <CloseIcon />
                 </button>
