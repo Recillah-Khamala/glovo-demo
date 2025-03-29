@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { wrappedSetLoginView, wrappedSetName } from "../store/loginSlice";
 import { loginSuccess } from "../redux/actions/authActions";
-import { authAPI } from "../services/api";
 import LoginHeader from "./LoginHeader";
 import nameTagIcon from "../assets/name-tag.svg";
+import { authAPI } from "../services/api";
 import LoadingSpinner from "./LoadingSpinner";
 import ErrorMessage from "./ErrorMessage";
 
