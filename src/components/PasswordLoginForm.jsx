@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import LoginHeader from "./LoginHeader";
-import emailEnvelope from "../assets/email-envelope.svg";
-import emailIcon from "../assets/email-icon.svg";
-import { useDispatch } from "react-redux";
-import { wrappedSetLoginView, wrappedSetEmail } from "../store/loginSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { wrappedSetLoginView } from "../store/loginSlice";
+import { loginSuccess } from "../redux/actions/authActions";
+import LoginHeader from "./LoginHeader";
+import lockIcon from "../assets/lock.svg";
 
 const BackIcon = () => (
   <svg
@@ -42,15 +42,14 @@ const CloseIcon = () => (
   </svg>
 );
 
-const EmailLoginForm = () => {
-  const [emailValue, setEmailValue] = useState("");
+const PasswordLoginForm = () => {
+  const [passwordValue, setPasswordValue] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const email = useSelector((state) => state.login.email);
 
   const handleBack = () => {
-    console.log("Back button clicked");
-    dispatch(wrappedSetLoginView("login"));
-    console.log("Dispatched setLoginView with 'login'");
+    dispatch(wrappedSetLoginView("email"));
   };
 
   const handleClose = () => {
@@ -59,18 +58,24 @@ const EmailLoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Check if user exists in backend
-    const userExists = true; // This will come from backend
+    // TODO: Verify password with backend
+    const isValidPassword = true; // This will come from backend
 
-    // Store email in Redux state
-    dispatch(wrappedSetEmail(emailValue));
+    if (isValidPassword) {
+      // Create user object with login data
+      const user = {
+        email,
+        isAuthenticated: true
+      };
 
-    if (userExists) {
-      // Navigate to password login view for existing user
-      dispatch(wrappedSetLoginView("password"));
+      // Update auth state in Redux
+      dispatch(loginSuccess(user));
+      
+      // Navigate to home page
+      navigate("/home");
     } else {
-      // Navigate to create password view for new user
-      dispatch(wrappedSetLoginView("create-password"));
+      // TODO: Show error message
+      console.error("Invalid password");
     }
   };
 
@@ -140,8 +145,8 @@ const EmailLoginForm = () => {
               <div className="flex flex-col items-start w-full">
                 <div className="w-full mb-1">
                   <img
-                    alt="email-envelope"
-                    src={emailEnvelope}
+                    alt="lock"
+                    src={lockIcon}
                     width="96"
                     height="96"
                     loading="lazy"
@@ -152,48 +157,38 @@ const EmailLoginForm = () => {
                 </div>
                 <div className="w-full">
                   <p className="pintxo-typography-title2 EmailForm_title__FTOE_ text-3xl font-bold mb-4">
-                    Let's start with your email
+                    Welcome back!<br />Enter your password
                   </p>
                 </div>
 
                 <p className="pintxo-typography-body1 EmailForm_text__wspKT text-zinc-950 text-xl mb-2">
-                  We'll check if you already have an account. If not, we'll
-                  create a new one.
+                  Use your password to log in to your existing account.
                 </p>
                 <div className="Field_pintxo-field-container__oICbz w-full">
                   <div className="FieldHeader_pintxo-field-header__H1Uqt mb-2">
                     <div>
                       <span
-                        id=":r9:-header"
+                        id="email-header"
                         className="FieldHeader_pintxo-field-header__label__UzrUo font-bold text-base text-zinc-500"
                       >
-                        Email
+                        {email}
                       </span>
                     </div>
                   </div>
                   <div className="BaseInput_pintxo-base-input__99D1j text-input relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                      <img
-                        src={emailIcon}
-                        alt="email"
-                        width="25"
-                        height="25"
-                        className="opacity-70"
-                      />
-                    </span>
                     <input
-                      className="BaseInput_pintxo-base-input__input__N7OGR pintxo-typography-body1 w-full px-12 py-4 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent text-zinc-800 text-lg font-semibold"
-                      aria-label="Email"
-                      placeholder="Email"
-                      type="email"
-                      value={emailValue}
-                      onChange={(e) => setEmailValue(e.target.value)}
+                      className="BaseInput_pintxo-base-input__input__N7OGR pintxo-typography-body1 w-full px-4 py-4 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#017963] focus:border-transparent text-zinc-800 text-lg font-semibold"
+                      aria-label="Password"
+                      placeholder="Password"
+                      type="password"
+                      value={passwordValue}
+                      onChange={(e) => setPasswordValue(e.target.value)}
                     />
-                    {emailValue && (
+                    {passwordValue && (
                       <button
-                        onClick={() => setEmailValue("")}
+                        onClick={() => setPasswordValue("")}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100"
-                        aria-label="Clear email"
+                        aria-label="Clear password"
                       >
                         <CloseIcon />
                       </button>
@@ -201,9 +196,14 @@ const EmailLoginForm = () => {
                   </div>
                 </div>
                 <div className="EmailForm_submit__gCVss w-full mt-6">
+                  <p className="text-center mb-4">
+                    <a href="#" className="text-[#017963] hover:underline">
+                      Forgot your password?
+                    </a>
+                  </p>
                   <button
                     className="BaseButton_pintxo-button__OUsk3 pintxo-typography-callout1 w-full bg-[#017963] text-zinc-600 text-lg font-bold py-3 rounded-[50px] hover:bg-[#00664E] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-                    disabled={!emailValue}
+                    disabled={!passwordValue}
                     onClick={handleSubmit}
                     type="submit"
                   >
@@ -223,4 +223,4 @@ const EmailLoginForm = () => {
   );
 };
 
-export default EmailLoginForm;
+export default PasswordLoginForm; 
