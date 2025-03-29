@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLoginView, setName } from "../store/loginSlice";
+import { wrappedSetLoginView, wrappedSetName } from "../store/loginSlice";
 import { loginSuccess } from "../redux/actions/authActions";
 import LoginHeader from "./LoginHeader";
 import nameTagIcon from "../assets/name-tag.svg";
@@ -72,7 +72,7 @@ const CreateName = () => {
   const email = useSelector((state) => state.login.email);
 
   const handleBack = () => {
-    dispatch(setLoginView("create-password"));
+    dispatch(wrappedSetLoginView("create-password"));
   };
 
   const handleClose = () => {
@@ -85,7 +85,7 @@ const CreateName = () => {
 
     try {
       // Store name in Redux state
-      dispatch(setName(name));
+      dispatch(wrappedSetName(name));
       
       // Create user object with all registration data
       const user = {

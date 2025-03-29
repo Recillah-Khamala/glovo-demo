@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import HomePage from "./components/HomePage";
 import { useSelector, useDispatch } from "react-redux";
-import { setLoginView } from "./store/loginSlice";
+import { wrappedSetLoginView } from "./store/loginSlice";
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -60,7 +60,7 @@ const AppContent = () => {
 
   useEffect(() => {
     // Reset login view when component mounts
-    dispatch(setLoginView(null));
+    dispatch(wrappedSetLoginView(null));
   }, [dispatch]);
 
   return (

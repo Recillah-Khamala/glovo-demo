@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../redux/actions/authActions";
 import balloonLogo from "../assets/glovo-balloon-logo.svg";
+import { wrappedSetAddress } from "../store/loginSlice";
 
 const styles = `
   .curved-bottom:before {
@@ -58,6 +59,24 @@ const ScrollToTopButton = () => (
 );
 
 const AddressModal = ({ isOpen, onClose }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data.type === 'ADDRESS_SELECTED') {
+        const selectedAddress = {
+          street: event.data.address.street,
+          city: event.data.address.city
+        };
+        dispatch(wrappedSetAddress(selectedAddress));
+        onClose();
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [dispatch, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -100,6 +119,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const address = useSelector((state) => state.login.address);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
@@ -175,7 +195,7 @@ const HomePage = () => {
               />
               <span className="text-base font-extrabold">Delivering to</span>
               <span className="font-bold text-base text-[#00846BFF]">
-                Belmont Court
+                {address ? address.street : "Add your address"}
               </span>
               <img
                 src="https://glovoapp.com/images/landing/dropdown-black.svg"

@@ -5,6 +5,7 @@ const initialState = {
   email: "",
   password: "",
   name: "",
+  address: null, // null | { street: string, city: string }
 };
 
 export const loginSlice = createSlice({
@@ -23,11 +24,11 @@ export const loginSlice = createSlice({
     setName: (state, action) => {
       state.name = action.payload;
     },
+    setAddress: (state, action) => {
+      state.address = action.payload;
+    },
   },
 });
-
-// Export the actions
-const { setLoginView, setEmail, setPassword, setName } = loginSlice.actions;
 
 // Create wrapped versions of the actions that ensure plain objects
 export const wrappedSetLoginView = (view) => ({
@@ -35,14 +36,14 @@ export const wrappedSetLoginView = (view) => ({
   payload: view,
 });
 
-export const wrappedSetPassword = (password) => ({
-  type: "login/setPassword",
-  payload: password,
-});
-
 export const wrappedSetEmail = (email) => ({
   type: "login/setEmail",
   payload: email,
+});
+
+export const wrappedSetPassword = (password) => ({
+  type: "login/setPassword",
+  payload: password,
 });
 
 export const wrappedSetName = (name) => ({
@@ -50,5 +51,9 @@ export const wrappedSetName = (name) => ({
   payload: name,
 });
 
-export { setLoginView, setEmail, setPassword, setName };
+export const wrappedSetAddress = (address) => ({
+  type: "login/setAddress",
+  payload: address,
+});
+
 export default loginSlice.reducer;

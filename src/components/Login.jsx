@@ -6,7 +6,7 @@ import EmailLoginForm from "./EmailLoginForm";
 import CreatePassword from "./CreatePassword";
 import CreateName from "./CreateName";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoginView } from "../store/loginSlice";
+import { wrappedSetLoginView } from "../store/loginSlice";
 import { useNavigate } from "react-router-dom";
 
 // Replace the email icon import with the URL
@@ -100,7 +100,7 @@ const Login = ({ onBack }) => {
 
   // Show email form if currentLoginView is "email"
   if (currentLoginView === "email") {
-    return <EmailLoginForm onBack={() => dispatch(setLoginView(null))} />;
+    return <EmailLoginForm onBack={() => dispatch(wrappedSetLoginView(null))} />;
   }
 
   // Show create password form if currentLoginView is "create-password"
@@ -126,7 +126,7 @@ const Login = ({ onBack }) => {
 
   const handleSocialLogin = (provider) => {
     if (provider === "Email") {
-      dispatch(setLoginView("email"));
+      dispatch(wrappedSetLoginView("email"));
     } else {
       // TODO: Implement social login logic
       console.log(`${provider} login clicked`);

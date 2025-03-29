@@ -3,7 +3,7 @@ import LoginHeader from "./LoginHeader";
 import emailEnvelope from "../assets/email-envelope.svg";
 import emailIcon from "../assets/email-icon.svg";
 import { useDispatch } from "react-redux";
-import { setLoginView, setEmail } from "../store/loginSlice";
+import { wrappedSetLoginView, wrappedSetEmail } from "../store/loginSlice";
 import { useNavigate } from "react-router-dom";
 
 const BackIcon = () => (
@@ -49,7 +49,7 @@ const EmailLoginForm = () => {
 
   const handleBack = () => {
     console.log("Back button clicked");
-    dispatch(setLoginView("login"));
+    dispatch(wrappedSetLoginView("login"));
     console.log("Dispatched setLoginView with 'login'");
   };
 
@@ -63,14 +63,14 @@ const EmailLoginForm = () => {
     const userExists = false; // This will come from backend
 
     // Store email in Redux state
-    dispatch(setEmail(emailValue));
+    dispatch(wrappedSetEmail(emailValue));
 
     if (userExists) {
       // TODO: Navigate to login with password view
       console.log("User exists, should show login view");
     } else {
       // Navigate to create password view for new user
-      dispatch(setLoginView("create-password"));
+      dispatch(wrappedSetLoginView("create-password"));
     }
   };
 
