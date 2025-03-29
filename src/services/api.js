@@ -7,6 +7,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true 
 });
 
 // Add a request interceptor to add the auth token
@@ -28,6 +29,15 @@ export const authAPI = {
   login: (credentials) => api.post('/auth/login', credentials),
   signup: (userData) => api.post('/auth/signup', { user: userData }), // Changed from register to signup to match Rails
   logout: () => api.delete('/auth/logout'), // Changed to DELETE method
+  checkUserExists: async (email) => {
+    try {
+      const response = await api.post('/auth/check_user', { email });
+      return response;
+    } catch (error) {
+      console.error('API Error:', error.response?.data || error);
+      throw error.response?.data || error;
+    }
+  },
 };
 
 // User endpoints

@@ -99,10 +99,13 @@ const CreatePassword = () => {
 
     try {
       // Create user with email and password
-      await authAPI.signup({
+      const response = await authAPI.signup({
         email,
-        password
+        password,
+        registration_step: 'password'  // Add this to track registration progress
       });
+
+      console.log('Signup response:', response);
 
       // Store password in Redux state
       dispatch(wrappedSetPassword(password));
@@ -110,8 +113,9 @@ const CreatePassword = () => {
       // Navigate to create name view
       dispatch(wrappedSetLoginView("create-name"));
     } catch (error) {
-      setError(error.message || "Failed to create account. Please try again.");
       console.error("Error in handleSubmit:", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to create account. Please try again.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
