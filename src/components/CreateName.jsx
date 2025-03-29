@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { wrappedSetLoginView, wrappedSetName } from "../store/loginSlice";
@@ -71,7 +70,6 @@ const CreateName = () => {
   const [name, setNameValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { toggleLoginModal, login } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = useSelector((state) => state.login.email);
@@ -92,7 +90,7 @@ const CreateName = () => {
 
     try {
       // Complete user registration with name
-      const response = await authAPI.completeRegistration({
+      await authAPI.completeRegistration({
         email,
         password,
         name
@@ -110,12 +108,6 @@ const CreateName = () => {
 
       // Update auth state in Redux
       dispatch(loginSuccess(user));
-      
-      // Update auth context
-      login();
-
-      // Close the login modal
-      toggleLoginModal();
       
       // Navigate to home page
       navigate("/home");

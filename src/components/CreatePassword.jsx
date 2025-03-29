@@ -99,7 +99,7 @@ const CreatePassword = () => {
 
     try {
       // Create user with email and password
-      const response = await authAPI.signup({
+      await authAPI.signup({
         email,
         password
       });

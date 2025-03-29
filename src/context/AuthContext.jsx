@@ -5,29 +5,35 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const login = async (credentials) => {
     try {
-      setLoading(true);
       const response = await authAPI.login(credentials);
       localStorage.setItem('token', response.data.token);
       setIsAuthenticated(true);
     } catch (error) {
-      setError(error.message);
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   const logout = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem('token');
+  };
+
+  const toggleLoginModal = () => {
+    setShowLoginModal(!showLoginModal);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ 
+      isAuthenticated, 
+      login, 
+      logout, 
+      toggleLoginModal,
+      showLoginModal 
+    }}>
       {children}
     </AuthContext.Provider>
   );
