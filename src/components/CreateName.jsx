@@ -4,8 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { wrappedSetLoginView, wrappedSetName } from "../store/loginSlice";
 import { loginSuccess } from "../redux/actions/authActions";
+import { authAPI } from "../services/api";
 import LoginHeader from "./LoginHeader";
 import nameTagIcon from "../assets/name-tag.svg";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
 
 const BackIcon = () => (
   <svg
@@ -66,10 +69,13 @@ const UserIcon = () => (
 
 const CreateName = () => {
   const [name, setNameValue] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { toggleLoginModal, login } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = useSelector((state) => state.login.email);
+  const password = useSelector((state) => state.login.password);
 
   const handleBack = () => {
     dispatch(wrappedSetLoginView("create-password"));
@@ -79,11 +85,19 @@ const CreateName = () => {
     navigate('/home');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting name:", name);
+    setLoading(true);
+    setError(null);
 
     try {
+      // Complete user registration with name
+      const response = await authAPI.completeRegistration({
+        email,
+        password,
+        name
+      });
+
       // Store name in Redux state
       dispatch(wrappedSetName(name));
       
@@ -106,7 +120,10 @@ const CreateName = () => {
       // Navigate to home page
       navigate("/home");
     } catch (error) {
+      setError(error.message || "Failed to complete registration. Please try again.");
       console.error("Error in handleSubmit:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -196,6 +213,10 @@ const CreateName = () => {
           </section>
         </section>
       </div>
+
+      {/* Loading and Error States */}
+      {loading && <LoadingSpinner />}
+      {error && <ErrorMessage message={error} />}
     </div>
   );
 };

@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { wrappedSetLoginView } from "../store/loginSlice";
-import { loginSuccess } from "../redux/actions/authActions";
+import { loginSuccess, loginFailure } from "../redux/actions/authActions";
 import LoginHeader from "./LoginHeader";
 import lockIcon from "../assets/lock.svg";
+import { authAPI } from "../services/api";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
 
 const BackIcon = () => (
   <svg
@@ -44,11 +47,12 @@ const CloseIcon = () => (
 
 const PasswordLoginForm = () => {
   const [passwordValue, setPasswordValue] = useState("");
+  const [localLoading, setLocalLoading] = useState(false);
+  const [localError, setLocalError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = useSelector((state) => state.login.email);
-  const name = useSelector((state) => state.login.name);
-  const address = useSelector((state) => state.login.address);
+  const { loading, error } = useSelector((state) => state.auth);
 
   const handleBack = () => {
     dispatch(wrappedSetLoginView("email"));
@@ -60,26 +64,38 @@ const PasswordLoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Verify password with backend
-    const isValidPassword = true; // This will come from backend
+    setLocalLoading(true);
+    setLocalError(null);
 
-    if (isValidPassword) {
-      // Create user object with login data
-      const user = {
+    try {
+      const response = await authAPI.login({
         email,
-        name,
-        address,
-        isAuthenticated: true
-      };
-
-      // Update auth state in Redux
-      dispatch(loginSuccess(user));
+        password: passwordValue
+      });
       
-      // Navigate to home page
+      dispatch(loginSuccess(response.data.user));
       navigate("/home");
-    } else {
-      // TODO: Show error message
-      console.error("Invalid password");
+    } catch (error) {
+      setLocalError(error.message || "Invalid email or password. Please try again.");
+      dispatch(loginFailure(error.message));
+      console.error("Login failed:", error);
+    } finally {
+      setLocalLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    setLocalLoading(true);
+    setLocalError(null);
+    try {
+      await authAPI.forgotPassword(email);
+      // Show success message
+      setLocalError("Password reset email sent. Please check your inbox.");
+    } catch (error) {
+      setLocalError(error.message || "Failed to send password reset email. Please try again.");
+      console.error("Password reset error:", error);
+    } finally {
+      setLocalLoading(false);
     }
   };
 
@@ -187,12 +203,14 @@ const PasswordLoginForm = () => {
                       type="password"
                       value={passwordValue}
                       onChange={(e) => setPasswordValue(e.target.value)}
+                      disabled={localLoading || loading}
                     />
                     {passwordValue && (
                       <button
                         onClick={() => setPasswordValue("")}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100"
                         aria-label="Clear password"
+                        disabled={localLoading || loading}
                       >
                         <CloseIcon />
                       </button>
@@ -202,24 +220,22 @@ const PasswordLoginForm = () => {
                 <div className="EmailForm_submit__gCVss w-full mt-6">
                   <p className="text-center mb-4">
                     <button
-                      onClick={() => {
-                        // TODO: Implement forgot password functionality
-                        console.log("Forgot password clicked");
-                      }}
-                      className="text-[#017963] hover:underline bg-transparent border-none cursor-pointer"
+                      onClick={handleForgotPassword}
+                      className="text-[#017963] hover:underline bg-transparent border-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={localLoading || loading}
                     >
                       Forgot your password?
                     </button>
                   </p>
                   <button
                     className="BaseButton_pintxo-button__OUsk3 pintxo-typography-callout1 w-full bg-[#017963] text-zinc-600 text-lg font-bold py-3 rounded-[50px] hover:bg-[#00664E] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-                    disabled={!passwordValue}
+                    disabled={!passwordValue || localLoading || loading}
                     onClick={handleSubmit}
                     type="submit"
                   >
                     <span className="BaseButton_pintxo-button__content__LsfEa">
                       <span className="BaseButton_pintxo-button__content__label__JfXya">
-                        Continue
+                        {localLoading || loading ? "Logging in..." : "Continue"}
                       </span>
                     </span>
                   </button>
@@ -229,6 +245,10 @@ const PasswordLoginForm = () => {
           </section>
         </section>
       </div>
+
+      {/* Loading and Error States */}
+      {(localLoading || loading) && <LoadingSpinner />}
+      {(localError || error) && <ErrorMessage message={localError || error} />}
     </div>
   );
 };

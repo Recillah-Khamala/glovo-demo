@@ -1,11 +1,14 @@
 import React, { useState, useMemo } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { wrappedSetLoginView, wrappedSetPassword } from "../store/loginSlice";
+import { authAPI } from "../services/api";
 import LoginHeader from "./LoginHeader";
 import lockIcon from "../assets/lock.svg";
 import eyeOpen from "../assets/eye-open.svg";
 import eyeClosed from "../assets/eye-closed.svg";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
 
 const BackIcon = () => (
   <svg
@@ -44,8 +47,11 @@ const CloseIcon = () => (
 const CreatePassword = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const email = useSelector((state) => state.login.email);
 
   const passwordStrength = useMemo(() => {
     if (!password) return null;
@@ -86,17 +92,28 @@ const CreatePassword = () => {
     navigate('/home');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("handleSubmit started");
-    console.log("Current password:", password);
+    setLoading(true);
+    setError(null);
 
     try {
-      console.log("Dispatching setPassword action");
+      // Create user with email and password
+      const response = await authAPI.signup({
+        email,
+        password
+      });
+
+      // Store password in Redux state
       dispatch(wrappedSetPassword(password));
-      console.log("Dispatching setLoginView action");
+      
+      // Navigate to create name view
       dispatch(wrappedSetLoginView("create-name"));
     } catch (error) {
+      setError(error.message || "Failed to create account. Please try again.");
       console.error("Error in handleSubmit:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -215,6 +232,10 @@ const CreatePassword = () => {
           </div>
         </section>
       </div>
+
+      {/* Loading and Error States */}
+      {loading && <LoadingSpinner />}
+      {error && <ErrorMessage message={error} />}
     </div>
   );
 };

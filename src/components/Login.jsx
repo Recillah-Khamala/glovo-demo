@@ -9,6 +9,9 @@ import PasswordLoginForm from "./PasswordLoginForm";
 import { useDispatch, useSelector } from "react-redux";
 import { wrappedSetLoginView } from "../store/loginSlice";
 import { useNavigate } from "react-router-dom";
+import { authAPI } from "../services/api";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
 
 // Replace the email icon import with the URL
 const emailIcon = "https://glovoapp.com/_next/static/media/email.caf0e00b.svg";
@@ -79,6 +82,8 @@ const Login = ({ onBack }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const dropdownRef = useRef(null);
 
   // Redirect to home if already authenticated
@@ -120,22 +125,59 @@ const Login = ({ onBack }) => {
   }
 
   // Show main login view by default
-  const handleWhatsAppLogin = () => {
-    // TODO: Implement WhatsApp login logic
-    console.log("WhatsApp login clicked");
+  const handleWhatsAppLogin = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const fullPhoneNumber = `${selectedCountry.prefix}${phoneNumber}`;
+      const response = await authAPI.initiateWhatsAppLogin(fullPhoneNumber);
+      // Handle WhatsApp login response
+      console.log("WhatsApp login initiated:", response);
+    } catch (error) {
+      setError(error.message || "Failed to initiate WhatsApp login. Please try again.");
+      console.error("WhatsApp login error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSMSLogin = () => {
-    // TODO: Implement SMS login logic
-    console.log("SMS login clicked");
+  const handleSMSLogin = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const fullPhoneNumber = `${selectedCountry.prefix}${phoneNumber}`;
+      const response = await authAPI.initiateSMSLogin(fullPhoneNumber);
+      // Handle SMS login response
+      console.log("SMS login initiated:", response);
+    } catch (error) {
+      setError(error.message || "Failed to initiate SMS login. Please try again.");
+      console.error("SMS login error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSocialLogin = (provider) => {
+  const handleSocialLogin = async (provider) => {
     if (provider === "Email") {
       dispatch(wrappedSetLoginView("email"));
     } else {
-      // TODO: Implement social login logic
-      console.log(`${provider} login clicked`);
+      setLoading(true);
+      setError(null);
+      try {
+        let response;
+        if (provider === "Google") {
+          response = await authAPI.googleLogin();
+        } else if (provider === "Facebook") {
+          response = await authAPI.facebookLogin();
+        }
+        // Handle social login response
+        console.log(`${provider} login response:`, response);
+      } catch (error) {
+        setError(error.message || `Failed to login with ${provider}. Please try again.`);
+        console.error(`${provider} login error:`, error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -421,6 +463,10 @@ const Login = ({ onBack }) => {
           </div>
         </div>
       </div>
+
+      {/* Loading and Error States */}
+      {loading && <LoadingSpinner />}
+      {error && <ErrorMessage message={error} />}
     </div>
   );
 };

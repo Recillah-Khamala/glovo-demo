@@ -5,6 +5,9 @@ import emailIcon from "../assets/email-icon.svg";
 import { useDispatch } from "react-redux";
 import { wrappedSetLoginView, wrappedSetEmail } from "../store/loginSlice";
 import { useNavigate } from "react-router-dom";
+import { authAPI } from "../services/api";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
 
 const BackIcon = () => (
   <svg
@@ -44,6 +47,8 @@ const CloseIcon = () => (
 
 const EmailLoginForm = () => {
   const [emailValue, setEmailValue] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -59,18 +64,29 @@ const EmailLoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Check if user exists in backend
-    const userExists = true; // This will come from backend
+    setLoading(true);
+    setError(null);
 
-    // Store email in Redux state
-    dispatch(wrappedSetEmail(emailValue));
+    try {
+      // Check if user exists
+      const response = await authAPI.checkUserExists(emailValue);
+      const userExists = response.data.exists;
 
-    if (userExists) {
-      // Navigate to password login view for existing user
-      dispatch(wrappedSetLoginView("password"));
-    } else {
-      // Navigate to create password view for new user
-      dispatch(wrappedSetLoginView("create-password"));
+      // Store email in Redux state
+      dispatch(wrappedSetEmail(emailValue));
+
+      if (userExists) {
+        // Navigate to password login view for existing user
+        dispatch(wrappedSetLoginView("password"));
+      } else {
+        // Navigate to create password view for new user
+        dispatch(wrappedSetLoginView("create-password"));
+      }
+    } catch (error) {
+      setError(error.message || "An error occurred. Please try again.");
+      console.error("Error checking user:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -219,6 +235,10 @@ const EmailLoginForm = () => {
           </section>
         </section>
       </div>
+
+      {/* Loading and Error States */}
+      {loading && <LoadingSpinner />}
+      {error && <ErrorMessage message={error} />}
     </div>
   );
 };
