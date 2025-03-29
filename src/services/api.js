@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api/v1';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -26,23 +26,22 @@ api.interceptors.request.use(
 // Auth endpoints
 export const authAPI = {
   login: (credentials) => api.post('/auth/login', credentials),
-  register: (userData) => api.post('/auth/register', userData),
-  logout: () => {
-    localStorage.removeItem('token');
-    window.location.href = '/';
-  },
+  signup: (userData) => api.post('/auth/signup', { user: userData }), // Changed from register to signup to match Rails
+  logout: () => api.delete('/auth/logout'), // Changed to DELETE method
 };
 
 // User endpoints
 export const userAPI = {
   getProfile: () => api.get('/profile'),
-  updateProfile: (data) => api.put('/profile', data),
+  updateProfile: (data) => api.patch('/profile', { user: data }), // Changed to PATCH and wrapped in user object
 };
 
-// Password reset endpoints
-export const passwordResetAPI = {
-  requestReset: (email) => api.post('/password_reset', { email }),
-  resetPassword: (token, password) => api.put('/password_reset', { token, password }),
+// Address endpoints
+export const addressesAPI = {
+  getAddresses: () => api.get('/addresses'),
+  createAddress: (addressData) => api.post('/addresses', { address: addressData }),
+  updateAddress: (id, addressData) => api.patch(`/addresses/${id}`, { address: addressData }),
+  deleteAddress: (id) => api.delete(`/addresses/${id}`),
 };
 
-export default api; 
+export default api;
