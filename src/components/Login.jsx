@@ -5,6 +5,7 @@ import facebookIcon from "../assets/facebook.svg";
 import EmailLoginForm from "./EmailLoginForm";
 import CreatePassword from "./CreatePassword";
 import CreateName from "./CreateName";
+import PasswordLoginForm from "./PasswordLoginForm";
 import { useDispatch, useSelector } from "react-redux";
 import { wrappedSetLoginView } from "../store/loginSlice";
 import { useNavigate } from "react-router-dom";
@@ -101,6 +102,11 @@ const Login = ({ onBack }) => {
   // Show email form if currentLoginView is "email"
   if (currentLoginView === "email") {
     return <EmailLoginForm onBack={() => dispatch(wrappedSetLoginView(null))} />;
+  }
+
+  // Show password login form if currentLoginView is "password"
+  if (currentLoginView === "password") {
+    return <PasswordLoginForm />;
   }
 
   // Show create password form if currentLoginView is "create-password"

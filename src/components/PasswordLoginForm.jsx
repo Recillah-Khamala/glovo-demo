@@ -197,9 +197,15 @@ const PasswordLoginForm = () => {
                 </div>
                 <div className="EmailForm_submit__gCVss w-full mt-6">
                   <p className="text-center mb-4">
-                    <a href="#" className="text-[#017963] hover:underline">
+                    <button
+                      onClick={() => {
+                        // TODO: Implement forgot password functionality
+                        console.log("Forgot password clicked");
+                      }}
+                      className="text-[#017963] hover:underline bg-transparent border-none cursor-pointer"
+                    >
                       Forgot your password?
-                    </a>
+                    </button>
                   </p>
                   <button
                     className="BaseButton_pintxo-button__OUsk3 pintxo-typography-callout1 w-full bg-[#017963] text-zinc-600 text-lg font-bold py-3 rounded-[50px] hover:bg-[#00664E] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
