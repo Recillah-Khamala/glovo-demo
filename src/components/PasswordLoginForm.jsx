@@ -47,6 +47,8 @@ const PasswordLoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = useSelector((state) => state.login.email);
+  const name = useSelector((state) => state.login.name);
+  const address = useSelector((state) => state.login.address);
 
   const handleBack = () => {
     dispatch(wrappedSetLoginView("email"));
@@ -65,6 +67,8 @@ const PasswordLoginForm = () => {
       // Create user object with login data
       const user = {
         email,
+        name,
+        address,
         isAuthenticated: true
       };
 

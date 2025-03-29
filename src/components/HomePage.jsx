@@ -119,7 +119,6 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const address = useSelector((state) => state.login.address);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
@@ -195,7 +194,7 @@ const HomePage = () => {
               />
               <span className="text-base font-extrabold">Delivering to</span>
               <span className="font-bold text-base text-[#00846BFF]">
-                {address ? address.street : "Add your address"}
+                {user?.address ? `${user.address.street}, ${user.address.city}` : "Add your address"}
               </span>
               <img
                 src="https://glovoapp.com/images/landing/dropdown-black.svg"
@@ -213,7 +212,7 @@ const HomePage = () => {
                   alt=""
                   className="w-5 h-5"
                 />
-                <span>{isAuthenticated ? user.name : "Login"}</span>
+                <span>{isAuthenticated ? user?.name || "User" : "Login"}</span>
               </button>
             </div>
           </div>
