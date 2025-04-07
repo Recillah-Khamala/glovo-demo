@@ -98,11 +98,22 @@ const CreatePassword = () => {
     setError(null);
 
     try {
+      // Double-check if user exists before attempting to sign up
+      // This helps prevent race conditions
+      const userCheck = await authAPI.checkUserExists(email);
+      if (userCheck.data && userCheck.data.exists === true) {
+        console.log('User already exists, redirecting to password login');
+        setError("This email is already registered. Please try logging in instead.");
+        setTimeout(() => {
+          dispatch(wrappedSetLoginView("password"));
+        }, 2000);
+        return;
+      }
+
       // Create user with email and password
       const response = await authAPI.signup({
         email,
-        password,
-        registration_step: 'password'  // Add this to track registration progress
+        password
       });
 
       console.log('Signup response:', response);
@@ -114,8 +125,24 @@ const CreatePassword = () => {
       dispatch(wrappedSetLoginView("create-name"));
     } catch (error) {
       console.error("Error in handleSubmit:", error);
-      const errorMessage = error.response?.data?.message || error.message || "Failed to create account. Please try again.";
-      setError(errorMessage);
+      
+      // Check if the error is due to email already being taken
+      if (error.response && error.response.status === 422) {
+        const errorMessage = error.response.data.error || 
+                            error.response.data.message || 
+                            "This email is already registered. Please try logging in instead.";
+        setError(errorMessage);
+        
+        // Redirect to login after a short delay
+        setTimeout(() => {
+          dispatch(wrappedSetLoginView("password"));
+        }, 3000);
+      } else {
+        const errorMessage = error.response?.data?.message || 
+                            error.message || 
+                            "Failed to create account. Please try again.";
+        setError(errorMessage);
+      }
     } finally {
       setLoading(false);
     }

@@ -68,17 +68,35 @@ const PasswordLoginForm = () => {
     setLocalError(null);
 
     try {
+      console.log('Attempting login with:', { email, password: '***' });
       const response = await authAPI.login({
         email,
         password: passwordValue
       });
       
-      dispatch(loginSuccess(response.data.user));
-      navigate("/home");
+      console.log('Login response:', response);
+      
+      if (response.data && response.data.user) {
+        dispatch(loginSuccess(response.data.user));
+        navigate("/home");
+      } else {
+        throw new Error('Invalid response format from server');
+      }
     } catch (error) {
-      setLocalError(error.message || "Invalid email or password. Please try again.");
-      dispatch(loginFailure(error.message));
       console.error("Login failed:", error);
+      console.error("Error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
+      
+      const errorMessage = error.response?.data?.error || 
+                          error.response?.data?.message || 
+                          error.message || 
+                          "Invalid email or password. Please try again.";
+      
+      setLocalError(errorMessage);
+      dispatch(loginFailure(errorMessage));
     } finally {
       setLocalLoading(false);
     }

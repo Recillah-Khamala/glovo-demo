@@ -90,30 +90,28 @@ const CreateName = () => {
 
     try {
       // Complete user registration with name
-      await authAPI.completeRegistration({
-        email,
-        password,
-        name
+      const response = await authAPI.completeRegistration({
+        user: {
+          email,
+          password,
+          name
+        }
       });
+      console.log('Registration response:', response);
 
       // Store name in Redux state
       dispatch(wrappedSetName(name));
       
-      // Create user object with all registration data
-      const user = {
-        name,
-        email,
-        isAuthenticated: true
-      };
-
-      // Update auth state in Redux
-      dispatch(loginSuccess(user));
-      
       // Navigate to home page
-      navigate("/home");
+      navigate('/home');
     } catch (error) {
-      setError(error.message || "Failed to complete registration. Please try again.");
-      console.error("Error in handleSubmit:", error);
+      console.error('Registration error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
+      setError(error.response?.data?.error || 'An error occurred during registration');
     } finally {
       setLoading(false);
     }
