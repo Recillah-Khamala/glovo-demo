@@ -47,38 +47,25 @@ export const authAPI = {
   logout: () => api.delete('/auth/logout'),
 
   checkUserExists: async (email) => {
-    try {
-      let retries = 2;
-      let lastError = null;
-      
-      while (retries >= 0) {
-        try {
-          const response = await api.post('/auth/check_user', { user: { email } });
-          
-          return {
-            ...response,
-            data: {
-              ...response.data,
-              exists: Boolean(response.data?.exists)
-            }
-          };
-        } catch (error) {
-          lastError = error;
-          
-          if (retries > 0 && (!error.response || error.response.status >= 500)) {
-            retries--;
-            await new Promise(resolve => setTimeout(resolve, 1000 * (3 - retries)));
-            continue;
-          }
-          
-          throw error;
+    const maxRetries = 3;
+    const delay = 1000;
+    let retries = 0;
+
+    const attemptRequest = async () => {
+      try {
+        const response = await api.post("/auth/check_user", { email });
+        return response;
+      } catch (error) {
+        if (retries < maxRetries) {
+          retries++;
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return attemptRequest();
         }
+        throw error;
       }
-      
-      throw lastError || new Error('Failed to check if user exists');
-    } catch (error) {
-      throw error;
-    }
+    };
+
+    return attemptRequest();
   },
 
   completeRegistration: async (userData) => {
