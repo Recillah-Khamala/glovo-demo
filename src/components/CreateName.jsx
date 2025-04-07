@@ -87,31 +87,22 @@ const CreateName = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
+  
     try {
-      // Complete user registration with name
       const response = await authAPI.completeRegistration({
-        user: {
-          email,
-          password,
-          name
-        }
+        email: email.toLowerCase(),
+        first_name: name
       });
-      console.log('Registration response:', response);
 
-      // Store name in Redux state
       dispatch(wrappedSetName(name));
-      
-      // Navigate to home page
       navigate('/home');
     } catch (error) {
-      console.error('Registration error:', error);
-      console.error('Error details:', {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status
-      });
-      setError(error.response?.data?.error || 'An error occurred during registration');
+      const errorMessage = error.response?.data?.error || 
+                          error.response?.data?.message || 
+                          error.message || 
+                          'An error occurred during registration. Please try again.';
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

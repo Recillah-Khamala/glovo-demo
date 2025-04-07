@@ -68,13 +68,10 @@ const PasswordLoginForm = () => {
     setLocalError(null);
 
     try {
-      console.log('Attempting login with:', { email, password: '***' });
       const response = await authAPI.login({
         email,
         password: passwordValue
       });
-      
-      console.log('Login response:', response);
       
       if (response.data && response.data.user) {
         dispatch(loginSuccess(response.data.user));
@@ -83,13 +80,6 @@ const PasswordLoginForm = () => {
         throw new Error('Invalid response format from server');
       }
     } catch (error) {
-      console.error("Login failed:", error);
-      console.error("Error details:", {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status
-      });
-      
       const errorMessage = error.response?.data?.error || 
                           error.response?.data?.message || 
                           error.message || 
@@ -107,11 +97,9 @@ const PasswordLoginForm = () => {
     setLocalError(null);
     try {
       await authAPI.forgotPassword(email);
-      // Show success message
       setLocalError("Password reset email sent. Please check your inbox.");
     } catch (error) {
       setLocalError(error.message || "Failed to send password reset email. Please try again.");
-      console.error("Password reset error:", error);
     } finally {
       setLocalLoading(false);
     }

@@ -53,9 +53,7 @@ const EmailLoginForm = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    console.log("Back button clicked");
     dispatch(wrappedSetLoginView("login"));
-    console.log("Dispatched setLoginView with 'login'");
   };
 
   const handleClose = () => {
@@ -68,7 +66,6 @@ const EmailLoginForm = () => {
     setError(null);
 
     try {
-      // Check if user exists with retry logic
       let retries = 2;
       let lastError = null;
       let response = null;
@@ -76,20 +73,16 @@ const EmailLoginForm = () => {
       while (retries >= 0) {
         try {
           response = await authAPI.checkUserExists(emailValue);
-          break; // Success, exit the retry loop
+          break;
         } catch (error) {
           lastError = error;
-          console.error(`User check error (attempt ${3 - retries}/3):`, error);
           
-          // If we have retries left and it's a network error, retry
           if (retries > 0 && (!error.response || error.response.status >= 500)) {
             retries--;
-            // Wait a bit before retrying (exponential backoff)
             await new Promise(resolve => setTimeout(resolve, 1000 * (3 - retries)));
             continue;
           }
           
-          // If we're out of retries or it's not a network error, throw
           throw error;
         }
       }
@@ -98,26 +91,16 @@ const EmailLoginForm = () => {
         throw lastError || new Error('Failed to check if user exists');
       }
       
-      console.log('User exists check response:', response);
-      
-      // Store email in Redux state
       dispatch(wrappedSetEmail(emailValue));
 
-      // Check if the user exists based on the response
       const userExists = response.data && response.data.exists === true;
-      console.log('User exists:', userExists);
       
       if (userExists) {
-        // Navigate to password login view for existing user
-        console.log('User exists, redirecting to password login');
         dispatch(wrappedSetLoginView("password"));
       } else {
-        // Navigate to create password view for new user
-        console.log('User does not exist, redirecting to create password');
         dispatch(wrappedSetLoginView("create-password"));
       }
     } catch (error) {
-      console.error("Error checking user:", error);
       setError(error.response?.data?.error || error.message || "An error occurred. Please try again.");
     } finally {
       setLoading(false);

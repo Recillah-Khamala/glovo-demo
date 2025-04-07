@@ -93,16 +93,12 @@ const CreatePassword = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("handleSubmit started");
     setLoading(true);
     setError(null);
 
     try {
-      // Double-check if user exists before attempting to sign up
-      // This helps prevent race conditions
       const userCheck = await authAPI.checkUserExists(email);
       if (userCheck.data && userCheck.data.exists === true) {
-        console.log('User already exists, redirecting to password login');
         setError("This email is already registered. Please try logging in instead.");
         setTimeout(() => {
           dispatch(wrappedSetLoginView("password"));
@@ -110,30 +106,20 @@ const CreatePassword = () => {
         return;
       }
 
-      // Create user with email and password
       const response = await authAPI.signup({
         email,
         password
       });
 
-      console.log('Signup response:', response);
-
-      // Store password in Redux state
       dispatch(wrappedSetPassword(password));
-      
-      // Navigate to create name view
       dispatch(wrappedSetLoginView("create-name"));
     } catch (error) {
-      console.error("Error in handleSubmit:", error);
-      
-      // Check if the error is due to email already being taken
       if (error.response && error.response.status === 422) {
         const errorMessage = error.response.data.error || 
                             error.response.data.message || 
                             "This email is already registered. Please try logging in instead.";
         setError(errorMessage);
         
-        // Redirect to login after a short delay
         setTimeout(() => {
           dispatch(wrappedSetLoginView("password"));
         }, 3000);
