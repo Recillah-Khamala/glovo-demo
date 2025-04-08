@@ -3,17 +3,6 @@ import textLogo from "../assets/glovo-text-logo.svg";
 import balloonLogo from "../assets/glovo-balloon-logo.svg";
 import Login from "./Login";
 
-// Constants
-const COLORS = {
-  header: "#FFC244FF",
-  button: {
-    primary: "#00A082FF",
-    hover: "#008F72",
-    active: "#007B62",
-    focus: "#00A082"
-  }
-};
-
 // Logo Component
 const Logo = () => (
   <div>
@@ -33,7 +22,7 @@ const LoginButton = ({ onClick }) => (
       type="button"
       aria-label="Login"
       onClick={onClick}
-      className={`flex items-center justify-center bg-[${COLORS.button.primary}] hover:bg-[${COLORS.button.hover}] active:bg-[${COLORS.button.active}] text-white transition-colors duration-200 rounded-full px-3 md:px-4 py-1.5 md:py-2 focus:outline-none focus:ring-2 focus:ring-[${COLORS.button.focus}] focus:ring-offset-2`}
+      className="flex items-center justify-center bg-[#00A082FF] hover:bg-[#00846BFF] active:bg-[#007B62] text-white transition-colors duration-200 rounded-full px-3 md:px-4 py-1.5 md:py-2 focus:outline-none focus:ring-2 focus:ring-[#00A082] focus:ring-offset-2"
     >
       <div className="flex items-center px-1 md:px-2 py-0.5">
         <img
@@ -53,7 +42,7 @@ const LoginButton = ({ onClick }) => (
 // Header Component
 const Header = ({ onLoginClick }) => {
   return (
-    <header className={`bg-[${COLORS.header}] fixed w-full z-[100]`}>
+    <header className="bg-[#FFC244FF] fixed w-full z-[100]">
       <div className="mx-auto flex justify-between items-center box-border w-full max-w-[calc(1124px+15%)] py-2 md:py-4 px-4 md:px-[7.5%]">
         <Logo />
         <LoginButton onClick={onLoginClick} />
