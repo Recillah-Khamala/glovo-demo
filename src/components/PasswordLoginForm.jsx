@@ -73,8 +73,22 @@ const PasswordLoginForm = () => {
         password: passwordValue
       });
       
-      if (response.data && response.data.user) {
-        dispatch(loginSuccess(response.data.user));
+      console.log('Login API Response:', response);
+      console.log('User Data:', response.data.data.user);
+      
+      if (response.data && response.data.data && response.data.data.user) {
+        const userData = response.data.data.user;
+        console.log('User Data Structure:', {
+          id: userData.id,
+          email: userData.email,
+          first_name: userData.first_name
+        });
+        
+        dispatch(loginSuccess({
+          id: userData.id,
+          email: userData.email,
+          first_name: userData.first_name || 'User'
+        }));
         navigate("/home");
       } else {
         throw new Error('Invalid response format from server');

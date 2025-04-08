@@ -60,22 +60,16 @@ const ScrollToTopButton = () => (
 
 const AddressModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
+  const [street, setStreet] = useState('');
+  const [city, setCity] = useState('');
 
-  useEffect(() => {
-    const handleMessage = (event) => {
-      if (event.data.type === 'ADDRESS_SELECTED') {
-        const selectedAddress = {
-          street: event.data.address.street,
-          city: event.data.address.city
-        };
-        dispatch(wrappedSetAddress(selectedAddress));
-        onClose();
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [dispatch, onClose]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (street && city) {
+      dispatch(wrappedSetAddress({ street, city }));
+      onClose();
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -84,7 +78,7 @@ const AddressModal = ({ isOpen, onClose }) => {
       className="fixed inset-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50"
       data-test-id="modal-window"
     >
-      <div className="relative bg-white rounded-lg w-[90%] max-w-[800px] h-[90vh]">
+      <div className="relative bg-white rounded-lg w-[90%] max-w-[500px] p-6">
         <div className="absolute top-4 right-4 z-10">
           <svg
             width="24"
@@ -103,13 +97,37 @@ const AddressModal = ({ isOpen, onClose }) => {
             />
           </svg>
         </div>
-        <div className="w-full h-full rounded-lg overflow-hidden">
-          <iframe
-            title="Address Book Desktop"
-            src="https://glovoapp.com/en/internal/address-book-desktop"
-            className="w-full h-full border-0"
-          />
-        </div>
+        <h2 className="text-2xl font-bold mb-4">Enter Your Address</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
+            <input
+              type="text"
+              value={street}
+              onChange={(e) => setStreet(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#017963]"
+              placeholder="Enter your street address"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+            <input
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#017963]"
+              placeholder="Enter your city"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-[#017963] text-white py-2 px-4 rounded-md hover:bg-[#00664E] transition-colors"
+          >
+            Confirm Address
+          </button>
+        </form>
       </div>
     </div>
   );
@@ -119,8 +137,15 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const address = useSelector((state) => state.login.address);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+
+  useEffect(() => {
+    console.log('HomePage User Data:', user);
+    console.log('Is Authenticated:', isAuthenticated);
+    console.log('Address Data:', address);
+  }, [user, isAuthenticated, address]);
 
   const handleAuthClick = () => {
     if (isAuthenticated) {
@@ -194,7 +219,7 @@ const HomePage = () => {
               />
               <span className="text-base font-extrabold">Delivering to</span>
               <span className="font-bold text-base text-[#00846BFF]">
-                {user?.address ? `${user.address.street}, ${user.address.city}` : "Add your address"}
+                {address ? `${address.street}, ${address.city}` : "Add your address"}
               </span>
               <img
                 src="https://glovoapp.com/images/landing/dropdown-black.svg"
@@ -212,7 +237,7 @@ const HomePage = () => {
                   alt=""
                   className="w-5 h-5"
                 />
-                <span>{isAuthenticated ? user?.name || "User" : "Login"}</span>
+                <span>{isAuthenticated ? user?.first_name || "User" : "Login"}</span>
               </button>
             </div>
           </div>
