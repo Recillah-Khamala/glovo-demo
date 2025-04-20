@@ -104,7 +104,7 @@ const Address = () => {
           data-test-id="address-container-section"
           className="relative flex flex-col items-center bg-[#FFC244FF] pt-10 mb-[123px]"
         >
-          <div className="container mx-auto px-20 pt-6">
+          <div className="container mx-auto pt-6 gap-6">  
             <div className="flex flex-col md:flex-row md:items-center max-w-7xl mx-auto">
               <div
                 data-test-id="address-animation"
@@ -145,85 +145,36 @@ const Address = () => {
                 </video>
               </div>
 
-              <div className="md:w-1/2 max-w-2xl md:pl-8">
-                <h1 className="text-3xl md:text-6xl font-bold text-gray-900 my-8">
+              <div className="md:w-1/2 max-w-2xl md:pl-8 px-4 md:px-0">
+                <h1 className="text-4xl md:text-7xl font-bold text-gray-900 mb-4 leading-tight">
                   Food delivery and more
                 </h1>
-                <p className="hidden md:block text-lg md:text-xl text-gray-900 font-bold mb-6">
+                <p className="text-2xl text-gray-900 font-bold mb-8">
                   Groceries, shops, pharmacies, anything!
                 </p>
 
-                <div className="flex flex-col md:flex-row items-center gap-4">
-                  <div
-                    data-test-id="address-input-container"
-                    className="bg-white rounded-lg p-3 flex items-center justify-between w-full max-w-lg"
-                  >
-                    <div className="flex items-center gap-2 flex-1">
-                      <div className="w-6 h-6 text-[#1C1C1CFF] flex-shrink-0">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M4.125 8.8648C4.125 4.59333 7.6601 1.125 12 1.125C16.3399 1.125 19.875 4.59333 19.875 8.8648C19.875 10.5107 19.5009 12.2592 18.7689 14.06C18.2011 15.4599 17.4128 16.8999 16.4244 18.3481C15.6945 19.4161 14.9171 20.4011 14.1403 21.282C13.6582 21.8288 13.2272 22.2758 13.036 22.4559C12.7553 22.7279 12.3837 22.875 12 22.875C11.614 22.875 11.2393 22.7269 10.966 22.4587C10.7533 22.2557 10.3387 21.8242 9.85811 21.278C9.08129 20.395 8.30417 19.4086 7.57439 18.3395C6.5875 16.8928 5.79879 15.452 5.23027 14.0531C4.4988 12.2512 4.125 10.5056 4.125 8.8648Z"
-                            stroke="#292929"
-                            strokeWidth="1.5"
-                          />
-                          <mask
-                            id="mask0_3_3292"
-                            maskUnits="userSpaceOnUse"
-                            x="3"
-                            y="0"
-                            width="18"
-                            height="24"
-                            style={{ maskType: "alpha" }}
-                          >
-                            <path
-                              d="M4.125 8.8648C4.125 4.59333 7.6601 1.125 12 1.125C16.3399 1.125 19.875 4.59333 19.875 8.8648C19.875 10.5107 19.5009 12.2592 18.7689 14.06C18.2011 15.4599 17.4128 16.8999 16.4244 18.3481C15.6945 19.4161 14.9171 20.4011 14.1403 21.282C13.6582 21.8288 13.2272 22.2758 13.036 22.4559C12.7553 22.7279 12.3837 22.875 12 22.875C11.614 22.875 11.2393 22.7269 10.966 22.4587C10.7533 22.2557 10.3387 21.8242 9.85811 21.278C9.08129 20.395 8.30417 19.4086 7.57439 18.3395C6.5875 16.8928 5.79879 15.452 5.23027 14.0531C4.4988 12.2512 4.125 10.5056 4.125 8.8648Z"
-                              fill="white"
-                              stroke="white"
-                              strokeWidth="1.5"
-                            />
-                          </mask>
-                          <g mask="url(#mask0_3_3292)">
-                            <ellipse
-                              cx="12"
-                              cy="9.13281"
-                              rx="3.75"
-                              ry="3.75"
-                              stroke="#292929"
-                              strokeWidth="1.5"
-                            />
-                          </g>
+                <div className="flex items-center gap-2 w-full">
+                  <div className="flex-1 bg-white rounded-lg overflow-hidden">
+                    <div className="flex items-center h-14">
+                      <div className="px-4">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4.125 8.8648C4.125 4.59333 7.6601 1.125 12 1.125C16.3399 1.125 19.875 4.59333 19.875 8.8648C19.875 10.5107 19.5009 12.2592 18.7689 14.06C18.2011 15.4599 17.4128 16.8999 16.4244 18.3481C15.6945 19.4161 14.9171 20.4011 14.1403 21.282C13.6582 21.8288 13.2272 22.2758 13.036 22.4559C12.7553 22.7279 12.3837 22.875 12 22.875C11.614 22.875 11.2393 22.7269 10.966 22.4587C10.7533 22.2557 10.3387 21.8242 9.85811 21.278C9.08129 20.395 8.30417 19.4086 7.57439 18.3395C6.5875 16.8928 5.79879 15.452 5.23027 14.0531C4.4988 12.2512 4.125 10.5056 4.125 8.8648Z" stroke="#292929" strokeWidth="1.5"/>
                         </svg>
                       </div>
                       <input
                         type="text"
                         placeholder="What's your address?"
-                        className="w-full pl-2 border-none outline-none font-lg text-lg"
-                      />
-                    </div>
-                    <div className="w-6 h-6 block md:hidden flex-shrink-0">
-                      <img
-                        src="https://glovoapp.com/images/svg/arrowForward.svg"
-                        alt="Forward arrow"
+                        className="w-full h-full border-none outline-none text-lg"
                       />
                     </div>
                   </div>
 
-                  <div className="bg-[#D5F6EFFF] rounded-full p-3 flex items-center gap-2 text-gray-900 cursor-pointer hover:text-gray-700 whitespace-nowrap">
-                    <img
-                      src="https://glovoapp.com/images/svg/locationArrow.svg"
-                      className="w-5 h-5"
-                      alt="Location arrow"
-                    />
-                    <span className="text-lg font-medium">
-                      Use current location
-                    </span>
-                  </div>
+                  <button className="flex items-center gap-2 bg-[#D5F6EFFF] h-14 px-4 rounded-full hover:bg-opacity-90 transition-all">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L15.6 5.6M12 2L8.4 5.6M12 2V16M21 12L17.4 15.6M21 12L17.4 8.4M21 12H7M12 22L8.4 18.4M12 22L15.6 18.4M12 22V8M3 12L6.6 8.4M3 12L6.6 15.6M3 12H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span className="font-medium whitespace-nowrap">Use current location</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -241,6 +192,19 @@ const Address = () => {
             alt="Wave shape"
             className="absolute bottom-[30px] left-0 w-full h-auto md:hidden block"
           />
+        </div>
+
+        {/* Top restaurants section */}
+        <div className="w-full">
+          <h2 
+            data-test-id="top-partners-title" 
+            className="box-border text-[40px] font-bold leading-[1.2] mx-auto my-8 w-full text-center px-[7.5%] md:px-[5%] text-gray-900"
+          >
+            <span className="bg-white px-2 pt-3 rounded-md">
+              <span>Top restaurants and more</span>
+            </span>
+            <span> in Glovo</span>
+          </h2>
         </div>
 
         {/* Only show scroll button if login is not shown */}
