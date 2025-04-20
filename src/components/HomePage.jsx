@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../redux/actions/authActions";
+import { logout } from "../store/authSlice";
 import balloonLogo from "../assets/glovo-balloon-logo.svg";
 import { wrappedSetAddress } from "../store/loginSlice";
 

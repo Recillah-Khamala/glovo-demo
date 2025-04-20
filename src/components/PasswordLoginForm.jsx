@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { wrappedSetLoginView } from "../store/loginSlice";
-import { loginSuccess, loginFailure } from "../redux/actions/authActions";
+import { login } from "../store/authSlice";
 import LoginHeader from "./LoginHeader";
 import lockIcon from "../assets/lock.svg";
 import { authAPI } from "../services/api";
@@ -73,18 +73,10 @@ const PasswordLoginForm = () => {
         password: passwordValue
       });
       
-      console.log('Login API Response:', response);
-      console.log('User Data:', response.data.data.user);
-      
       if (response.data && response.data.data && response.data.data.user) {
         const userData = response.data.data.user;
-        console.log('User Data Structure:', {
-          id: userData.id,
-          email: userData.email,
-          first_name: userData.first_name
-        });
         
-        dispatch(loginSuccess({
+        dispatch(login({
           id: userData.id,
           email: userData.email,
           first_name: userData.first_name || 'User'
@@ -100,7 +92,6 @@ const PasswordLoginForm = () => {
                           "Invalid email or password. Please try again.";
       
       setLocalError(errorMessage);
-      dispatch(loginFailure(errorMessage));
     } finally {
       setLocalLoading(false);
     }

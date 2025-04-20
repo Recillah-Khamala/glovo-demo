@@ -7,11 +7,12 @@ import CreatePassword from "./CreatePassword";
 import CreateName from "./CreateName";
 import PasswordLoginForm from "./PasswordLoginForm";
 import { useDispatch, useSelector } from "react-redux";
-import { wrappedSetLoginView } from "../store/loginSlice";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../services/api";
 import LoadingSpinner from "./LoadingSpinner";
 import ErrorMessage from "./ErrorMessage";
+import { setLoginView } from '../store/authSlice';
+import { wrappedSetLoginView } from "../store/loginSlice";
 
 // Replace the email icon import with the URL
 const emailIcon = "https://glovoapp.com/_next/static/media/email.caf0e00b.svg";
@@ -77,13 +78,11 @@ const ChevronDownIcon = () => (
 const Login = ({ onBack }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
   const currentLoginView = useSelector((state) => state.login?.currentView);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const dropdownRef = useRef(null);
 
   // Redirect to home if already authenticated
@@ -126,43 +125,31 @@ const Login = ({ onBack }) => {
 
   // Show main login view by default
   const handleWhatsAppLogin = async () => {
-    setLoading(true);
-    setError(null);
     try {
       const fullPhoneNumber = `${selectedCountry.prefix}${phoneNumber}`;
       const response = await authAPI.initiateWhatsAppLogin(fullPhoneNumber);
       // Handle WhatsApp login response
       console.log("WhatsApp login initiated:", response);
     } catch (error) {
-      setError(error.message || "Failed to initiate WhatsApp login. Please try again.");
       console.error("WhatsApp login error:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleSMSLogin = async () => {
-    setLoading(true);
-    setError(null);
     try {
       const fullPhoneNumber = `${selectedCountry.prefix}${phoneNumber}`;
       const response = await authAPI.initiateSMSLogin(fullPhoneNumber);
       // Handle SMS login response
       console.log("SMS login initiated:", response);
     } catch (error) {
-      setError(error.message || "Failed to initiate SMS login. Please try again.");
       console.error("SMS login error:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleSocialLogin = async (provider) => {
     if (provider === "Email") {
-      dispatch(wrappedSetLoginView("email"));
+      dispatch(setLoginView("email"));
     } else {
-      setLoading(true);
-      setError(null);
       try {
         let response;
         if (provider === "Google") {
@@ -173,10 +160,7 @@ const Login = ({ onBack }) => {
         // Handle social login response
         console.log(`${provider} login response:`, response);
       } catch (error) {
-        setError(error.message || `Failed to login with ${provider}. Please try again.`);
         console.error(`${provider} login error:`, error);
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -223,7 +207,7 @@ const Login = ({ onBack }) => {
                 </div>
                 <div className="relative">
                   <button
-                    className="w-full flex items-center gap-2 px-3 py-4 border rounded-lg border-gray-400 focus:ring-1 focus:ring-[#017963] bg-white hover:bg-gray-50 transition-colors"
+                    className={`w-full flex items-center gap-2 px-3 py-4 border rounded-lg border-gray-400 focus:ring-1 focus:ring-[#017963] bg-white hover:bg-gray-50 transition-colors`}
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     type="button"
                   >
@@ -240,7 +224,7 @@ const Login = ({ onBack }) => {
                       {COUNTRIES.map((country) => (
                         <button
                           key={country.code}
-                          className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 transition-colors"
+                          className={`w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 transition-colors`}
                           onClick={() => {
                             setSelectedCountry(country);
                             setIsDropdownOpen(false);
@@ -316,7 +300,7 @@ const Login = ({ onBack }) => {
           {/* Verification Methods */}
           <div className="w-full mt-8 flex gap-3">
             <button
-              className="flex-1 px-4 py-2 border-2 border-[#017963] text-[#017963] bg-[#e0f0ed] font-bold rounded-[50px] hover:bg-[#c6ebe4] transition-colors"
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#00A082FF] hover:bg-[#00846BFF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200`}
               type="submit"
               name="WhatsApp"
               onClick={handleWhatsAppLogin}
@@ -326,7 +310,7 @@ const Login = ({ onBack }) => {
               </span>
             </button>
             <button
-              className="flex-1 px-4 py-2 bg-[#017963] text-white font-bold rounded-[50px] hover:bg-[#00664E] transition-colors"
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#00A082FF] hover:bg-[#00846BFF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200`}
               type="submit"
               name="SMS"
               onClick={handleSMSLogin}
@@ -343,7 +327,7 @@ const Login = ({ onBack }) => {
           <section className="mt-6 grid grid-row-3 gap-4 w-full">
             <div id="google-button-prompt-target"></div>
             <button
-              className="BaseButton_pintxo-button__OUsk3 LoginButton_socialButton__XqOuf pintxo-typography-callout1 w-full border border-zinc-300 rounded-[50px] py-3 flex justify-center hover:bg-[#e6e5f6]"
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#00A082FF] hover:bg-[#00846BFF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200`}
               data-size="m"
               data-variant="floating"
               data-disabled="false"
@@ -372,7 +356,7 @@ const Login = ({ onBack }) => {
               </span>
             </button>
             <button
-              className="BaseButton_pintxo-button__OUsk3 LoginButton_socialButton__XqOuf pintxo-typography-callout1 w-full border border-zinc-300 rounded-[50px] py-3 flex justify-center hover:bg-[#e6e5f6]"
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#00A082FF] hover:bg-[#00846BFF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200`}
               data-size="m"
               data-variant="floating"
               data-disabled="false"
@@ -401,7 +385,7 @@ const Login = ({ onBack }) => {
               </span>
             </button>
             <button
-              className="BaseButton_pintxo-button__OUsk3 LoginButton_socialButton__XqOuf pintxo-typography-callout1 w-full border border-zinc-300 rounded-[50px] py-3 flex justify-center hover:bg-[#e6e5f6]"
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#00A082FF] hover:bg-[#00846BFF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200`}
               data-size="m"
               data-variant="floating"
               data-disabled="false"

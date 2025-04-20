@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { wrappedSetLoginView, wrappedSetName } from "../store/loginSlice";
-import { loginSuccess } from "../redux/actions/authActions";
 import LoginHeader from "./LoginHeader";
 import nameTagIcon from "../assets/name-tag.svg";
 import { authAPI } from "../services/api";
@@ -73,7 +72,6 @@ const CreateName = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = useSelector((state) => state.login.email);
-  const password = useSelector((state) => state.login.password);
 
   const handleBack = () => {
     dispatch(wrappedSetLoginView("create-password"));
@@ -89,7 +87,7 @@ const CreateName = () => {
     setError(null);
   
     try {
-      const response = await authAPI.completeRegistration({
+      await authAPI.completeRegistration({
         email: email.toLowerCase(),
         first_name: name
       });
