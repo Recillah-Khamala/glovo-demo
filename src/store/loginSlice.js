@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   currentView: null, // null | 'email' | 'create-password' | 'create-name'
@@ -6,7 +6,21 @@ const initialState = {
   password: "",
   name: "",
   address: null, // null | { street: string, city: string }
+  topRestaurants: [],
+  restaurantsStatus: 'idle',
+  restaurantsError: null
 };
+
+export const fetchTopRestaurants = createAsyncThunk(
+  'login/fetchTopRestaurants',
+  async () => {
+    const response = await fetch('https://api.glovoapp.com/v3/partners/top');
+    if (!response.ok) {
+      throw new Error('Failed to fetch top restaurants');
+    }
+    return response.json();
+  }
+);
 
 export const loginSlice = createSlice({
   name: "login",
@@ -28,6 +42,20 @@ export const loginSlice = createSlice({
       state.address = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTopRestaurants.pending, (state) => {
+        state.restaurantsStatus = 'loading';
+      })
+      .addCase(fetchTopRestaurants.fulfilled, (state, action) => {
+        state.restaurantsStatus = 'succeeded';
+        state.topRestaurants = action.payload;
+      })
+      .addCase(fetchTopRestaurants.rejected, (state, action) => {
+        state.restaurantsStatus = 'failed';
+        state.restaurantsError = action.error.message;
+      });
+  }
 });
 
 // Create wrapped versions of the actions that ensure plain objects
