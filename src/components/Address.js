@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import textLogo from "../assets/glovo-text-logo.svg";
 import balloonLogo from "../assets/glovo-balloon-logo.svg";
 import Login from "./Login";
+import { fetchTopRestaurants } from '../store/restaurantsSlice';
 
 // Logo Component
 const Logo = () => (
@@ -77,6 +79,12 @@ const ScrollToTopButton = () => (
 const Address = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const dispatch = useDispatch();
+  const { topRestaurants, status, error } = useSelector((state) => state.restaurants);
+
+  useEffect(() => {
+    dispatch(fetchTopRestaurants());
+  }, [dispatch]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -198,13 +206,36 @@ const Address = () => {
         <div className="w-full">
           <h2 
             data-test-id="top-partners-title" 
-            className="box-border text-[40px] font-bold leading-[1.2] mx-auto my-8 w-full text-center px-[7.5%] md:px-[5%] text-gray-900"
+            className="box-border text-[40px] font-bold leading-[1.2] mx-auto mt-8 w-full text-center px-[7.5%] md:px-[5%] text-gray-900"
           >
             <span className="bg-white px-2 pt-3 rounded-md">
               <span>Top restaurants and more</span>
             </span>
             <span> in Glovo</span>
           </h2>
+
+          {status === 'loading' && (
+            <div className="text-center py-8">Loading restaurants...</div>
+          )}
+          
+          {status === 'failed' && (
+            <div className="text-center py-8 text-red-500">Error: {error}</div>
+          )}
+          
+          {status === 'succeeded' && (
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 px-[7.5%] md:px-[5%] mt-8">
+              {topRestaurants.map((restaurant) => (
+                <div key={restaurant.id} className="flex flex-col items-center">
+                  <img 
+                    src={restaurant.image} 
+                    alt={restaurant.name}
+                    className="w-24 h-24 rounded-full object-cover"
+                  />
+                  <span className="mt-2 text-center font-medium">{restaurant.name}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Only show scroll button if login is not shown */}
