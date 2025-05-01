@@ -28,7 +28,7 @@ api.interceptors.request.use(
 export const authAPI = {
   login: async (credentials) => {
     try {
-      const response = await api.post('/auth/login', { user: credentials });
+      const response = await api.post('/auth/login', credentials);
       return response;
     } catch (error) {
       throw error;
@@ -90,6 +90,18 @@ export const addressesAPI = {
   createAddress: (addressData) => api.post('/addresses', { address: addressData }),
   updateAddress: (id, addressData) => api.patch(`/addresses/${id}`, { address: addressData }),
   deleteAddress: (id) => api.delete(`/addresses/${id}`),
+};
+
+// Restaurants endpoints
+export const restaurantsAPI = {
+  getTopRestaurants: () => api.get('/partners/top'),
+};
+
+// Categories endpoints
+export const categoriesAPI = {
+  getCategories: () => api.get('/categories'),
+  getCategory: (id) => api.get(`/categories/${id}`),
+  getCategoryRestaurants: (id) => api.get(`/categories/${id}/restaurants`),
 };
 
 export default api;

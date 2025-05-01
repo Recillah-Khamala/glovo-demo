@@ -76,7 +76,7 @@ const ScrollToTopButton = () => (
   </button>
 );
 
-const Address = () => {
+const Address = ({ address }) => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const dispatch = useDispatch();
@@ -171,8 +171,9 @@ const Address = () => {
                       </div>
                       <input
                         type="text"
-                        placeholder="What's your address?"
+                        placeholder={address ? `${address.street}, ${address.city}` : "What's your address?"}
                         className="w-full h-full border-none outline-none text-lg"
+                        readOnly
                       />
                     </div>
                   </div>

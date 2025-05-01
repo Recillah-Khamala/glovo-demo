@@ -68,23 +68,8 @@ const PasswordLoginForm = () => {
     setLocalError(null);
 
     try {
-      const response = await authAPI.login({
-        email,
-        password: passwordValue
-      });
-      
-      if (response.data && response.data.data && response.data.data.user) {
-        const userData = response.data.data.user;
-        
-        dispatch(login({
-          id: userData.id,
-          email: userData.email,
-          first_name: userData.first_name || 'User'
-        }));
-        navigate("/home");
-      } else {
-        throw new Error('Invalid response format from server');
-      }
+      await dispatch(login({ email, password: passwordValue }));
+      navigate("/home");
     } catch (error) {
       const errorMessage = error.response?.data?.error || 
                           error.response?.data?.message || 

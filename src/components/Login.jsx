@@ -148,7 +148,7 @@ const Login = ({ onBack }) => {
 
   const handleSocialLogin = async (provider) => {
     if (provider === "Email") {
-      dispatch(setLoginView("email"));
+      dispatch(wrappedSetLoginView("email"));
     } else {
       try {
         let response;

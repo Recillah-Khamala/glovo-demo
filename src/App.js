@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import HomePage from "./components/HomePage";
 import { useSelector, useDispatch } from "react-redux";
 import { wrappedSetLoginView } from "./store/loginSlice";
+import { AuthProvider } from "./context/AuthContext";
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -66,50 +67,52 @@ const AppContent = () => {
   return (
     <div>
       <ErrorBoundary>
-        <Routes>
-          {/* Landing page */}
-          <Route path="/" element={<Address />} />
-          
-          {/* Login page */}
-          <Route path="/login" element={<Login />} />
-          
-          {/* Home page - publicly accessible */}
-          <Route path="/home" element={<HomePage />} />
-          
-          {/* Address page - only accessible after login */}
-          <Route
-            path="/address"
-            element={
-              <ProtectedRoute>
-                <div className="min-h-screen flex flex-col">
-                  <main className="flex-grow">
-                    <Address />
-                  </main>
-                  <Footer />
-                </div>
-              </ProtectedRoute>
-            }
-          />
+        <AuthProvider>
+          <Routes>
+            {/* Landing page */}
+            <Route path="/" element={<Address />} />
+            
+            {/* Login page */}
+            <Route path="/login" element={<Login />} />
+            
+            {/* Home page - publicly accessible */}
+            <Route path="/home" element={<HomePage />} />
+            
+            {/* Address page - only accessible after login */}
+            <Route
+              path="/address"
+              element={
+                <ProtectedRoute>
+                  <div className="min-h-screen flex flex-col">
+                    <main className="flex-grow">
+                      <Address />
+                    </main>
+                    <Footer />
+                  </div>
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Catch-all route */}
-          <Route
-            path="*"
-            element={
-              <div className="min-h-screen flex items-center justify-center bg-gray-100">
-                <div className="text-center">
-                  <h1 className="text-2xl font-bold text-gray-800 mb-4">404 - Page Not Found</h1>
-                  <p className="text-gray-600 mb-4">The page you're looking for doesn't exist.</p>
-                  <button
-                    onClick={() => window.history.back()}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                  >
-                    Go Back
-                  </button>
+            {/* Catch-all route */}
+            <Route
+              path="*"
+              element={
+                <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                  <div className="text-center">
+                    <h1 className="text-2xl font-bold text-gray-800 mb-4">404 - Page Not Found</h1>
+                    <p className="text-gray-600 mb-4">The page you're looking for doesn't exist.</p>
+                    <button
+                      onClick={() => window.history.back()}
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    >
+                      Go Back
+                    </button>
+                  </div>
                 </div>
-              </div>
-            }
-          />
-        </Routes>
+              }
+            />
+          </Routes>
+        </AuthProvider>
       </ErrorBoundary>
     </div>
   );
