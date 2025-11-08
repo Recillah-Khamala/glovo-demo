@@ -1,0 +1,47 @@
+import { Order, OrderStatus } from '@/types'
+
+export const mockOrders: Order[] = [
+  {
+    id: 1,
+    user_id: 1,
+    office_id: 1,
+    package_description: 'Electronics package - Laptop and accessories',
+    weight: 5.5,
+    delivery_address: '100 Residential Street, Apartment 5B, Suburbia, State 12345',
+    status: OrderStatus.DELIVERED,
+    estimated_cost: 25.50,
+    estimated_time: 120,
+    tracking_code: 'GLVABC1234',
+    created_at: '2024-11-01T10:00:00Z',
+    updated_at: '2024-11-01T12:00:00Z',
+  },
+  {
+    id: 2,
+    user_id: 1,
+    office_id: 2,
+    package_description: 'Furniture delivery - Office chair and desk',
+    weight: 35.0,
+    delivery_address: '100 Residential Street, Apartment 5B, Suburbia, State 12345',
+    status: OrderStatus.IN_TRANSIT,
+    estimated_cost: 75.00,
+    estimated_time: 240,
+    tracking_code: 'GLVDEF5678',
+    created_at: '2024-11-05T09:00:00Z',
+    updated_at: '2024-11-05T11:00:00Z',
+  },
+  {
+    id: 3,
+    user_id: 1,
+    office_id: 3,
+    package_description: 'Clothing order - Winter collection items',
+    weight: 2.5,
+    delivery_address: '100 Residential Street, Apartment 5B, Suburbia, State 12345',
+    status: OrderStatus.PENDING,
+    estimated_cost: 15.00,
+    estimated_time: 90,
+    tracking_code: 'GLVGHI9012',
+    created_at: '2024-11-08T14:00:00Z',
+    updated_at: '2024-11-08T14:00:00Z',
+  },
+]
+
