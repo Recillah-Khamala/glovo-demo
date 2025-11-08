@@ -1,291 +1,164 @@
-<a name="readme-top"></a>
+# Glovo - Last-Mile Delivery Frontend
 
-<!--
-!!! IMPORTANT !!!
-This README is an example of how you could professionally present your codebase. 
-Writing documentation is a crucial part of your work as a professional software developer and cannot be ignored. 
+This is the frontend application for the Last-Mile Delivery feature, built with React + TypeScript + Redux + Tailwind CSS.
 
-You should modify this file to match your project and remove sections that don't apply.
+## 🛠 Tech Stack
 
-REQUIRED SECTIONS:
-- Table of Contents
-- About the Project
-  - Built With
-  - Live Demo
-- Getting Started
-- Authors
-- Future Features
-- Contributing
-- Show your support
-- Acknowledgements
-- License
+- **React 18** - UI library
+- **TypeScript** - Type safety
+- **Redux Toolkit** - State management
+- **React Router** - Navigation
+- **Tailwind CSS** - Styling
+- **Axios** - HTTP client
+- **Vite** - Build tool
+- **Jest + React Testing Library** - Unit/Integration testing
+- **Playwright** - End-to-end testing
 
-OPTIONAL SECTIONS:
-- FAQ
+## 📋 Prerequisites
 
-After you're finished please remove all the comments and instructions!
+- Node.js (v18 or higher)
+- npm or yarn
+- Backend API running on `http://localhost:3000` (see [glovob-demo](https://github.com/Recillah-Khamala/glovob-demo) repository)
 
-For more information on the importance of a professional README for your repositories: https://github.com/microverseinc/curriculum-transversal-skills/blob/main/documentation/articles/readme_best_practices.md
--->
+## 🚀 Getting Started
 
-<div align="center">
-  <!-- You are encouraged to replace this logo with your own! Otherwise you can also remove it. -->
-  <img src="murple_logo.png" alt="logo" width="140"  height="auto" />
-  <br/>
+### Installation
 
-  <h3><b>Microverse README Template</b></h3>
-
-</div>
-
-<!-- TABLE OF CONTENTS -->
-
-# 📗 Table of Contents
-
-- [📖 About the Project](#about-project)
-  - [🛠 Built With](#built-with)
-    - [Tech Stack](#tech-stack)
-    - [Key Features](#key-features)
-  - [🚀 Live Demo](#live-demo)
-- [💻 Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Setup](#setup)
-  - [Install](#install)
-  - [Usage](#usage)
-  - [Run tests](#run-tests)
-  - [Deployment](#deployment)
-- [👥 Authors](#authors)
-- [🔭 Future Features](#future-features)
-- [🤝 Contributing](#contributing)
-- [⭐️ Show your support](#support)
-- [🙏 Acknowledgements](#acknowledgements)
-- [❓ FAQ (OPTIONAL)](#faq)
-- [📝 License](#license)
-
-<!-- PROJECT DESCRIPTION -->
-
-# 📖 [your_project_name] <a name="about-project"></a>
-
-> Describe your project in 1 or 2 sentences.
-
-**[your_project__name]** is a...
-
-## 🛠 Built With <a name="built-with"></a>
-
-### Tech Stack <a name="tech-stack"></a>
-
-> Describe the tech stack and include only the relevant sections that apply to your project.
-
-<details>
-  <summary>Client</summary>
-  <ul>
-    <li><a href="https://reactjs.org/">React.js</a></li>
-  </ul>
-</details>
-
-<details>
-  <summary>Server</summary>
-  <ul>
-    <li><a href="https://expressjs.com/">Express.js</a></li>
-  </ul>
-</details>
-
-<details>
-<summary>Database</summary>
-  <ul>
-    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
-  </ul>
-</details>
-
-<!-- Features -->
-
-### Key Features <a name="key-features"></a>
-
-> Describe between 1-3 key features of the application.
-
-- **[key_feature_1]**
-- **[key_feature_2]**
-- **[key_feature_3]**
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- LIVE DEMO -->
-
-## 🚀 Live Demo <a name="live-demo"></a>
-
-> Add a link to your deployed project.
-
-- [Live Demo Link](https://google.com)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- GETTING STARTED -->
-
-## 💻 Getting Started <a name="getting-started"></a>
-
-> Describe how a new developer could make use of your project.
-
-To get a local copy up and running, follow these steps.
-
-### Prerequisites
-
-In order to run this project you need:
-
-<!--
-Example command:
-
-```sh
- gem install rails
+```bash
+# Install dependencies
+npm install
 ```
- -->
 
-### Setup
+### Environment Setup
 
-Clone this repository to your desired folder:
+Create a `.env` file in the root directory:
 
-<!--
-Example commands:
-
-```sh
-  cd my-folder
-  git clone git@github.com:myaccount/my-project.git
+```env
+VITE_API_BASE_URL=http://localhost:3000
 ```
---->
 
-### Install
+### Running the Development Server
 
-Install this project with:
-
-<!--
-Example command:
-
-```sh
-  cd my-project
-  gem install
+```bash
+npm run dev
 ```
---->
 
-### Usage
+The app will be available at `http://localhost:3001`
 
-To run the project, execute the following command:
+### Building for Production
 
-<!--
-Example command:
-
-```sh
-  rails server
+```bash
+npm run build
 ```
---->
 
-### Run tests
+### Preview Production Build
 
-To run tests, run the following command:
-
-<!--
-Example command:
-
-```sh
-  bin/rails test test/models/article_test.rb
+```bash
+npm run preview
 ```
---->
 
-### Deployment
+## 🧪 Testing
 
-You can deploy this project using:
+### Run Unit/Integration Tests
 
-<!--
-Example:
+```bash
+npm test
+```
 
-```sh
+### Run Tests in Watch Mode
+
+```bash
+npm run test:watch
+```
+
+### Run Tests with Coverage
+
+```bash
+npm run test:coverage
+```
+
+### Run End-to-End Tests
+
+```bash
+npm run test:e2e
+```
+
+## 📁 Project Structure
 
 ```
- -->
+src/
+├── api/              # API client and service functions
+├── components/        # Reusable UI components
+├── features/          # Feature-specific modules
+├── mock/             # Mock data for development
+├── pages/            # Page components
+├── routes/           # Route configuration
+├── store/            # Redux store and slices
+├── types/            # TypeScript type definitions
+└── utils/            # Utility functions
+```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## 🔌 Connecting to Backend
 
-<!-- AUTHORS -->
+The frontend is configured to connect to the Rails API backend. Make sure:
 
-## 👥 Authors <a name="authors"></a>
+1. The backend is running on `http://localhost:3000`
+2. CORS is properly configured in the backend
+3. The `.env` file has the correct `VITE_API_BASE_URL`
 
-> Mention all of the collaborators of this project.
+### API Endpoints Used
 
-👤 **Author1**
+- `GET /offices` - Fetch all transport offices
+- `GET /offices/:id` - Get specific office details
+- `POST /orders` - Create a new delivery order
+- `GET /orders/:id` - Get order details for tracking
+- `PATCH /orders/:id/status` - Update order status
+- `GET /users/:id/orders` - Get user's order history
 
-- GitHub: [@githubhandle](https://github.com/githubhandle)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
-- LinkedIn: [LinkedIn](https://linkedin.com/in/linkedinhandle)
+## 📱 Features
 
-👤 **Author2**
+- **User Profile** - View user information and recent deliveries
+- **Last-Mile Delivery** - Create new delivery requests
+- **Order Tracking** - Track delivery status with real-time updates
 
-- GitHub: [@githubhandle](https://github.com/githubhandle)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
-- LinkedIn: [LinkedIn](https://linkedin.com/in/linkedinhandle)
+## 🎨 Styling
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+This project uses **Tailwind CSS exclusively** for styling. All components are styled using Tailwind utility classes.
 
-<!-- FUTURE FEATURES -->
+## 📝 Code Quality
 
-## 🔭 Future Features <a name="future-features"></a>
+- **ESLint** - Linting
+- **Prettier** - Code formatting
 
-> Describe 1 - 3 features you will add to the project.
+Run linting:
+```bash
+npm run lint
+```
 
-- [ ] **[new_feature_1]**
-- [ ] **[new_feature_2]**
-- [ ] **[new_feature_3]**
+## 🚀 Deployment
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+This frontend can be deployed to:
 
-<!-- CONTRIBUTING -->
+- **Vercel** - Recommended for React apps
+- **Netlify** - Easy deployment with CI/CD
+- **GitHub Pages** - Free hosting for static sites
 
-## 🤝 Contributing <a name="contributing"></a>
+Make sure to set the `VITE_API_BASE_URL` environment variable in your deployment platform.
 
-Contributions, issues, and feature requests are welcome!
+## 📚 Next Steps
 
-Feel free to check the [issues page](../../issues/).
+1. Set up authentication (currently using mock user)
+2. Add real-time order status updates
+3. Implement push notifications
+4. Add payment integration
+5. Enhance error handling and user feedback
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## 👥 Author
 
-<!-- SUPPORT -->
+**Recillah Khamala**
 
-## ⭐️ Show your support <a name="support"></a>
+- GitHub: [@Recillah-Khamala](https://github.com/Recillah-Khamala)
 
-> Write a message to encourage readers to support your project
+## 📄 License
 
-If you like this project...
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGEMENTS -->
-
-## 🙏 Acknowledgments <a name="acknowledgements"></a>
-
-> Give credit to everyone who inspired your codebase.
-
-I would like to thank...
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- FAQ (optional) -->
-
-## ❓ FAQ (OPTIONAL) <a name="faq"></a>
-
-> Add at least 2 questions new developers would ask when they decide to use your project.
-
-- **[Question_1]**
-
-  - [Answer_1]
-
-- **[Question_2]**
-
-  - [Answer_2]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- LICENSE -->
-
-## 📝 License <a name="license"></a>
-
-This project is [MIT](./LICENSE) licensed.
-
-_NOTE: we recommend using the [MIT license](https://choosealicense.com/licenses/mit/) - you can set it up quickly by [using templates available on GitHub](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-license-to-a-repository). You can also use [any other license](https://choosealicense.com/licenses/) if you wish._
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+This project is MIT licensed.
